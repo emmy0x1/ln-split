@@ -3,11 +3,11 @@ import { logger } from '../../services';
 import { BaseRoute } from '../route';
 
 /**
- * @api {get} /ping Ping Request customer object
+ * @api {get} /ping Ping Request
  * @apiName Ping
  * @apiGroup Ping
  *
- * @apiSuccess {String} type Json Type.
+ * @apiSuccess {String}
  */
 export class PingRoute extends BaseRoute {
   public static path = '/ping';
@@ -38,9 +38,9 @@ export class PingRoute extends BaseRoute {
   /**
    * @class PingRoute
    * @method get
-   * @param req {Request} The express Request object.
-   * @param res {Response} The express Response object.
-   * @param next {NextFunction} Execute the next method.
+   * @param req {Request}
+   * @param res {Response}
+   * @param next {NextFunction}
    */
   private async get(req: Request, res: Response, next: NextFunction) {
     res.json('pong');

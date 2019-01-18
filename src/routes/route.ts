@@ -3,8 +3,6 @@ import { logger } from '../services';
 
 export abstract class BaseRoute {
   /**
-   * Constructor
-   *
    * @class BaseRoute
    * @constructor
    */

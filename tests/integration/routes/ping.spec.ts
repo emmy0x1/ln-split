@@ -1,11 +1,7 @@
 import supertest from 'supertest';
-import { app, server } from '../../../src/index';
+import { app } from '../../../src/index';
 
 describe('ping route', () => {
-  afterEach(async () => {
-    await server.close();
-  });
-
   it('should return pong', done => {
     supertest(app)
       .get('/api/ping')
