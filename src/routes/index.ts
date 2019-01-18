@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { logger } from '../services';
+import { InvoiceRoute } from './invoice';
 import { PingRoute } from './ping';
 import { BaseRoute } from './route';
 
 /**
  * / route
  *
- * @class User
+ * @class ApiRoutes
  */
 export class ApiRoutes extends BaseRoute {
   public static path = '/api';
@@ -43,14 +44,15 @@ export class ApiRoutes extends BaseRoute {
 
     this.router.get('/', this.get);
     this.router.use(PingRoute.path, PingRoute.router);
+    this.router.use(InvoiceRoute.path, InvoiceRoute.router);
   }
 
   /**
    * @class ApiRoute
    * @method index
-   * @param req {Request} The express Request object.
-   * @param res {Response} The express Response object.
-   * @param next {NextFunction} Execute the next method.
+   * @param req {Request}
+   * @param res {Response}
+   * @param next {NextFunction}
    */
   private async get(req: Request, res: Response, next: NextFunction) {
     res.status(200).json({ ok: true });
