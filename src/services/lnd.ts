@@ -1,5 +1,4 @@
-import createLnRpc from 'lnrpc';
-import { LnRpc } from 'lnrpc/types/lnrpc';
+import createLnRpc, { Invoice, LnRpc } from 'lnrpc';
 
 /**
  * Creates and manages LN RPC clients
@@ -32,27 +31,11 @@ export async function generateInvoice(
   valueSatoshis = 1000,
   expirySeconds = 3600,
 ): Promise<string> {
+  const invoice = <Invoice.AsObject>{};
+  invoice.memo = memo;
+  invoice.value = valueSatoshis;
+  invoice.expiry = expirySeconds;
+
   const lndClient = await LnRpcClientFactory.getLnRpc();
-  return (await lndClient.addInvoice({
-    memo,
-    value: valueSatoshis,
-    expiry: expirySeconds,
-    receipt: undefined,
-    rPreimage: undefined,
-    rHash: undefined,
-    settled: undefined,
-    creationDate: undefined,
-    settleDate: undefined,
-    paymentRequest: undefined,
-    descriptionHash: undefined,
-    fallbackAddr: undefined,
-    cltvExpiry: undefined,
-    routeHintsList: undefined,
-    pb_private: false,
-    addIndex: undefined,
-    settleIndex: undefined,
-    amtPaid: undefined,
-    amtPaidSat: undefined,
-    amtPaidMsat: undefined,
-  })).paymentRequest;
+  return (await lndClient.addInvoice(invoice)).paymentRequest;
 }
