@@ -22,6 +22,7 @@ export class LnRpcClientFactory {
       this._lnRpcClient = await createLnRpc({
         server: process.env.LND_URL,
         macaroonPath: process.env.LND_MACAROON_PATH,
+        tls: process.env.LND_CERT_PATH,
       });
     }
     return this._lnRpcClient;
