@@ -1,11 +1,13 @@
 import createLnRpc, {
   GetInfoResponse,
   Invoice,
-  InvoiceSubscription,
   LnRpc,
+  PayReq,
+  PayReqString,
+  SendRequest,
+  SendResponse,
   WalletBalanceResponse,
-} from 'lnrpc';
-import { logger, logInvoice } from './logger';
+} from '@radartech/lnrpc';
 
 /**
  * Creates and manages LN RPC clients
@@ -27,32 +29,6 @@ export class LnRpcClientFactory {
 }
 
 /**
- * Create subscribers to LND events with callback support
- * TODO add transaction event subscriber
- * TODO add channelgraph event subscriber
- *
- * @class LnRpcSubscriptionManager
- */
-export class LnRpcSubscriptionManager {
-  private static _invoiceSubscriber: any;
-
-  public static async subscribeInvoices(
-    eventCallback: (invoice: Invoice.AsObject) => void = logInvoice,
-  ): Promise<void> {
-    const client = await LnRpcClientFactory.getLnRpc();
-    if (this._invoiceSubscriber === undefined) {
-      this._invoiceSubscriber = await client.subscribeInvoices(<
-        InvoiceSubscription.AsObject
-      >{});
-    }
-
-    this._invoiceSubscriber.on('data', (invoice: Invoice.AsObject) => {
-      eventCallback(invoice);
-    });
-  }
-}
-
-/**
  * Returns result of LND GetInfo RPC call
  */
 export async function getInfo(): Promise<GetInfoResponse.AsObject> {
@@ -69,7 +45,34 @@ export async function getWalletBalance(): Promise<
 }
 
 /**
- * Generate a LN invoice and return the pay req string
+ * Returns result of LND DecodePayReq RPC call
+ * @param payReq the bolt11 encoded payment request
+ */
+export async function decodePayReq(payReq: string): Promise<PayReq.AsObject> {
+  return (await LnRpcClientFactory.getLnRpc()).decodePayReq(<
+    PayReqString.AsObject
+  >{
+    payReq,
+  });
+}
+
+/**
+ * Returns result of LND SendPaymentSync RPC call
+ * @param paymentRequest the bolt11 encoded payment request
+ */
+export async function sendPayment(
+  paymentRequest: string,
+): Promise<SendResponse.AsObject> {
+  return (await LnRpcClientFactory.getLnRpc()).sendPaymentSync(<
+    SendRequest.AsObject
+  >{
+    paymentRequest,
+  });
+}
+
+/**
+ * Generate a LN invoice using AddInvoice RPC call
+ * and return the paymentRequest as bolt11 encoded
  *
  * @param memo optional description to attach to invoice
  * @param valueSatoshis invoice amount in satoshis
@@ -77,14 +80,13 @@ export async function getWalletBalance(): Promise<
  */
 export async function generateInvoice(
   memo = '',
-  valueSatoshis = 1000,
-  expirySeconds = 3600,
+  valueSatoshis = '1000',
+  expirySeconds = '3600',
 ): Promise<string> {
   const invoice = <Invoice.AsObject>{};
   invoice.memo = memo;
   invoice.value = valueSatoshis;
   invoice.expiry = expirySeconds;
-
   return (await (await LnRpcClientFactory.getLnRpc()).addInvoice(invoice))
     .paymentRequest;
 }
