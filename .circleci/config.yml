@@ -10,6 +10,9 @@ run_tests: &run_tests
   steps:
   - checkout
   - *dependencies
+  - run:
+      name: Setup Env
+      command: cp .env.test .env
   - run: 
       name: Run Tests
       command: yarn test
