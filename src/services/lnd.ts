@@ -1,4 +1,11 @@
-import createLnRpc, { Invoice, LnRpc } from 'lnrpc';
+import createLnRpc, {
+  GetInfoResponse,
+  Invoice,
+  InvoiceSubscription,
+  LnRpc,
+  WalletBalanceResponse,
+} from 'lnrpc';
+import { logger, logInvoice } from './logger';
 
 /**
  * Creates and manages LN RPC clients
@@ -20,7 +27,49 @@ export class LnRpcClientFactory {
 }
 
 /**
- * Generate a LN invoice and return the bolt11 representation
+ * Create subscribers to LND events with callback support
+ * TODO add transaction event subscriber
+ * TODO add channelgraph event subscriber
+ *
+ * @class LnRpcSubscriptionManager
+ */
+export class LnRpcSubscriptionManager {
+  private static _invoiceSubscriber: any;
+
+  public static async subscribeInvoices(
+    eventCallback: (invoice: Invoice.AsObject) => void = logInvoice,
+  ): Promise<void> {
+    const client = await LnRpcClientFactory.getLnRpc();
+    if (this._invoiceSubscriber === undefined) {
+      this._invoiceSubscriber = await client.subscribeInvoices(<
+        InvoiceSubscription.AsObject
+      >{});
+    }
+
+    this._invoiceSubscriber.on('data', (invoice: Invoice.AsObject) => {
+      eventCallback(invoice);
+    });
+  }
+}
+
+/**
+ * Returns result of LND GetInfo RPC call
+ */
+export async function getInfo(): Promise<GetInfoResponse.AsObject> {
+  return (await LnRpcClientFactory.getLnRpc()).getInfo({});
+}
+
+/**
+ * Returns result of LND WalletBalance RPC call
+ */
+export async function getWalletBalance(): Promise<
+  WalletBalanceResponse.AsObject
+> {
+  return (await LnRpcClientFactory.getLnRpc()).walletBalance({});
+}
+
+/**
+ * Generate a LN invoice and return the pay req string
  *
  * @param memo optional description to attach to invoice
  * @param valueSatoshis invoice amount in satoshis
@@ -35,7 +84,8 @@ export async function generateInvoice(
   invoice.memo = memo;
   invoice.value = valueSatoshis;
   invoice.expiry = expirySeconds;
+  invoice.pb_private = true;
 
-  const lndClient = await LnRpcClientFactory.getLnRpc();
-  return (await lndClient.addInvoice(invoice)).paymentRequest;
+  return (await (await LnRpcClientFactory.getLnRpc()).addInvoice(invoice))
+    .paymentRequest;
 }

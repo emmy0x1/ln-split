@@ -1,16 +1,25 @@
 import dotenv from 'dotenv';
 import { Server } from './app';
 import { logger } from './services';
-import { LnRpcClientFactory } from './services/lnd';
+import {
+  getInfo,
+  getWalletBalance,
+  LnRpcClientFactory,
+  LnRpcSubscriptionManager,
+} from './services/lnd';
 
 dotenv.config();
 
 export const app = Server.bootstrap().app;
 
 (async () => {
-  const lndClient = await LnRpcClientFactory.getLnRpc();
-  const pubkey = (await lndClient.getInfo({})).identityPubkey;
-  logger.info(`[LND] Pubkey: ${pubkey}.`);
+  logger.info(`[LND] Pubkey: ${(await getInfo()).identityPubkey}.`);
+  logger.info(
+    `[LND] Confirmed Wallet Balance (sats): ${
+      (await getWalletBalance()).confirmedBalance
+    }.`,
+  );
+  await LnRpcSubscriptionManager.subscribeInvoices();
 
   const port = process.env.SERVER_PORT;
   app.listen(port);

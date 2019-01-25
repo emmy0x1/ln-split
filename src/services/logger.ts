@@ -1,5 +1,6 @@
 import debug from 'debug';
 import * as fs from 'fs';
+import { Invoice } from 'lnrpc';
 import winston from 'winston';
 
 const PATHS = {
@@ -8,7 +9,6 @@ const PATHS = {
   LOG_INFO: `${process.cwd()}/logs/_info.log`,
 };
 
-// ensure log directory exists
 (() => fs.existsSync(PATHS.LOG) || fs.mkdirSync(PATHS.LOG))();
 
 export const dbg = debug('express:server');
@@ -40,3 +40,10 @@ export const logger = winston.createLogger({
     }),
   ],
 });
+
+/**
+ * @param invoice the Invoice Object to log
+ */
+export function logInvoice(invoice: Invoice.AsObject) {
+  logger.info(`[LND] Invoice log: ${invoice.paymentRequest}.`);
+}
