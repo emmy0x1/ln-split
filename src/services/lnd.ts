@@ -84,7 +84,6 @@ export async function generateInvoice(
   invoice.memo = memo;
   invoice.value = valueSatoshis;
   invoice.expiry = expirySeconds;
-  invoice.pb_private = true;
 
   return (await (await LnRpcClientFactory.getLnRpc()).addInvoice(invoice))
     .paymentRequest;
