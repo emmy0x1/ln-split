@@ -2,6 +2,7 @@ import createLnRpc, {
   GetInfoResponse,
   Invoice,
   LnRpc,
+  LnRpcClientConfig,
   PayReq,
   PayReqString,
   SendRequest,
@@ -19,10 +20,19 @@ export class LnRpcClientFactory {
 
   public static async getLnRpc(): Promise<LnRpc> {
     if (this._lnRpcClient === undefined) {
-      this._lnRpcClient = await createLnRpc({
+      const config = <LnRpcClientConfig>{
         server: process.env.LND_URL,
-        macaroonPath: process.env.LND_MACAROON_PATH,
-      });
+      };
+
+      if (process.env.LND_MACAROON_PATH) {
+        config.macaroonPath = process.env.LND_MACAROON_PATH;
+      }
+
+      if (process.env.LND_CERT_PATH) {
+        config.tls = process.env.LND_CERT_PATH;
+      }
+
+      this._lnRpcClient = await createLnRpc(config);
     }
     return this._lnRpcClient;
   }
