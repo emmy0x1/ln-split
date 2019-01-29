@@ -1,4 +1,4 @@
-import { Invoice, InvoiceSubscription } from 'lnrpc';
+import { Invoice, InvoiceSubscription } from '@radartech/lnrpc';
 import { LnRpcClientFactory } from '.';
 import { logInvoice } from '../logger';
 

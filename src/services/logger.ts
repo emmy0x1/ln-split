@@ -1,6 +1,6 @@
+import { Invoice } from '@radartech/lnrpc';
 import debug from 'debug';
 import * as fs from 'fs';
-import { Invoice } from 'lnrpc';
 import winston from 'winston';
 
 const PATHS = {
