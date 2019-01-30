@@ -27,7 +27,7 @@ describe('invoice route', () => {
           done(err);
         } else {
           expect(res.status).toBe(200);
-          expect(res.body).toBe('newinvoice');
+          expect(res.body.invoice).toBe('newinvoice');
           done();
         }
       });

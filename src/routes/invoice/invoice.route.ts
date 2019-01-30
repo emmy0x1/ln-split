@@ -69,7 +69,8 @@ export class InvoiceRoute extends BaseRoute {
   private async get(req: Request, res: Response, next: NextFunction) {
     try {
       const invoice = await generateInvoice();
-      res.json(invoice);
+      logger.info(`[InvoiceRoute] Invoice created: ${invoice}.`);
+      res.json({ invoice });
     } catch (err) {
       res.status(400).json({ error: err });
     }
@@ -87,18 +88,32 @@ export class InvoiceRoute extends BaseRoute {
   private async pay(req: Request, res: Response, next: NextFunction) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      logger.info(
+        `[InvoiceRoute] Pay request internal error: ${errors.array()}.`,
+      );
       res.status(400).json({ error: errors.array() });
       return;
     }
 
     const sendPaymentResponse = await sendPayment(req.body.invoice);
     if (sendPaymentResponse.paymentError) {
+      logger.info(
+        `[InvoiceRoute] LND SendPaymentSync error: ${
+          sendPaymentResponse.paymentError
+        }.`,
+      );
       res.status(400).json({ error: sendPaymentResponse.paymentError });
       return;
     }
 
+    const preimage = (sendPaymentResponse.paymentPreimage as Buffer).toString(
+      'hex',
+    );
+    logger.info(
+      `[InvoiceRoute] LND SendPayment complete for preimage: ${preimage}.`,
+    );
     res.status(200).json({
-      preimage: (sendPaymentResponse.paymentPreimage as Buffer).toString('hex'),
+      preimage,
     });
   }
 }
