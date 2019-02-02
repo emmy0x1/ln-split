@@ -44,15 +44,13 @@ export class InvoiceRoute extends BaseRoute {
       [
         check('invoice').exists(),
         body('invoice').custom(async encodedPayReq => {
-          const decodedPayReq = await Lightning.client.decodePayReq({
+          const { numSatoshis } = await Lightning.client.decodePayReq({
             payReq: encodedPayReq,
           });
           // add custom payment conditions...ie. max invoice amount
-          if (new BigNumber(decodedPayReq.numSatoshis).gt(10000)) {
+          if (new BigNumber(numSatoshis).gt(10000)) {
             throw new Error(
-              `Payment Request amount exceeds 10000 satoshi (${
-                decodedPayReq.numSatoshis
-              })`,
+              `Payment Request amount exceeds 10000 satoshi (${numSatoshis})`,
             );
           }
         }),
@@ -71,11 +69,11 @@ export class InvoiceRoute extends BaseRoute {
    */
   private async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const invoice = await Lightning.client.addInvoice({
+      const { paymentRequest } = await Lightning.client.addInvoice({
         value: '1000',
-      } as Invoice);
-      logger.info(`[InvoiceRoute] Invoice created: ${invoice}.`);
-      res.json({ invoice });
+      });
+      logger.info(`[InvoiceRoute] Invoice created: ${paymentRequest}.`);
+      res.json({ invoice: paymentRequest });
     } catch (err) {
       res.status(400).json({ error: err });
     }
@@ -99,16 +97,17 @@ export class InvoiceRoute extends BaseRoute {
     }
 
     try {
-      const sendPaymentResponse = await Lightning.client.sendPaymentSync({
+      const {
+        paymentPreimage,
+        paymentError,
+      } = await Lightning.client.sendPaymentSync({
         paymentRequest: req.body.invoice,
-      } as SendRequest);
-      if (sendPaymentResponse.paymentError) {
-        throw new Error(sendPaymentResponse.paymentError);
+      });
+      if (paymentError) {
+        throw new Error(paymentError);
       }
 
-      const preimage = (sendPaymentResponse.paymentPreimage as Buffer).toString(
-        'hex',
-      );
+      const preimage = (paymentPreimage as Buffer).toString('hex');
       logger.info(
         `[InvoiceRoute] /pay payment complete for preimage: ${preimage}.`,
       );

@@ -3,7 +3,9 @@
  */
 export const lnrpcStub = {
   addInvoice: () => {
-    return {};
+    return {
+      paymentRequest: 'invoice',
+    };
   },
   decodePayReq: () => {
     return {
