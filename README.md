@@ -1,6 +1,10 @@
 # ln-api-boilerplate
 A boilerplate example project for creating lightning-enabled applications
 
+[![CircleCI](https://img.shields.io/circleci/project/github/RadarTech/ln-api-boilerplate/master.svg?style=flat)](https://circleci.com/gh/RadarTech/ln-api-boilerplate)
+[![Known Vulnerabilities](https://snyk.io/test/github/RadarTech/ln-api-boilerplate/badge.svg?targetFile=package.json)](https://snyk.io/test/github/RadarTech/ln-api-boilerplate?targetFile=package.json)
+[![License](https://img.shields.io/github/license/radartech/ln-api-boilerplate.svg?style=flat)](https://img.shields.io/github/license/radartech/ln-api-boilerplate.svg?style=flat)
+
 ## Quickstart
 ```sh
 $ yarn # OR npm install
