@@ -1,10 +1,10 @@
 {
   "name": "ln-api-boilerplate",
   "version": "0.1.0",
-  "description": "a lightning-network enabled boilerplate express API",
+  "description": "a lightning network integrated boilerplate express API",
   "main": "src/index.js",
   "scripts": {
-    "build": "gulp",
+    "build": "tsc -p .",
     "start": "nodemon --ext ts --watch ./src --exec \"npm run dev\"",
     "test": "NODE_ENV=test mocha 'test/**/*.test.ts'",
     "dev": "ts-node --type-check src/index.ts",
@@ -26,7 +26,6 @@
     "express-validator": "^5.3.1",
     "helmet": "^3.12.1",
     "morgan": "^1.9.0",
-    "ts-node": "^8.0.2",
     "winston": "^3.0.0"
   },
   "devDependencies": {
@@ -48,9 +47,6 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.2.1",
-    "gulp": "^4.0.0",
-    "gulp-json-minify": "^1.2.2",
-    "gulp-typescript": "^5.0.0-alpha.3",
     "husky": "^1.1.2",
     "lint-staged": "^7.3.0",
     "mocha": "^5.2.0",
@@ -58,6 +54,7 @@
     "nodemon": "^1.17.5",
     "prettier": "^1.14.3",
     "tslint": "^5.10.0",
+    "ts-node": "^8.0.2",
     "typescript": "^3.0.3"
   },
   "husky": {
