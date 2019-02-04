@@ -52,7 +52,7 @@ Enter the debug view by clicking the Debug icon in the Activity Bar or using the
 ![screen shot 2019-02-04 at 9 54 08 am](https://user-images.githubusercontent.com/20102664/52223583-2fc7b000-2863-11e9-9686-7289614742ed.png)
 
 There are three debug options:
-- Launch & Debug Application - Launch the application with nodemon and debug
+- Launch & Debug Application - Launch the application with ts-node and debug
 - Debug Tests - Start the tests and debug
 - Attach Debugger to Process - Attach the to debugger to a running process
 
