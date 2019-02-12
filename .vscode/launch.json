@@ -1,23 +1,17 @@
 {
   "version": "0.2.0",
   "configurations": [
-    {
-      "type": "node",
+		{
+			"type": "node",
       "request": "launch",
       "name": "Launch & Debug Application",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
-      "runtimeArgs": [
-        "--inspect=5858"
-      ],
-      "program": "${workspaceRoot}/src/index.ts",
-      "restart": true,
-      "port": 5858,
-      "protocol": "inspector",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "outFiles": ["${workspaceRoot}/build/src/**/*.js"],
-      "sourceMaps": true,
-    },
+			"args": ["${workspaceRoot}/src/index.ts"],
+			"runtimeArgs": ["-r", "ts-node/register"],
+			"cwd": "${workspaceRoot}",
+			"protocol": "inspector",
+			"console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+		},
     {
       "type": "node",
       "request": "launch",
