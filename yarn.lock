@@ -95,6 +95,18 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@radar/lnrpc@^0.5.1-beta":
+  version "0.5.1-beta"
+  resolved "https://registry.yarnpkg.com/@radar/lnrpc/-/lnrpc-0.5.1-beta.tgz#5a1812b22c9cf9c25c2410e7f7c1b6a900c7ef4b"
+  integrity sha512-nF42lplhu6EVOjjyGDE5vPQv733BNj3jSHvosEb+kxE0N5XbHiQKTX1eM1JCGT+edBBBSJkmUdaSDGJPRqFo/g==
+  dependencies:
+    "@grpc/proto-loader" "^0.3.0"
+    "@types/google-protobuf" "^3.2.7"
+    grpc "^1.14.0-pre2"
+    napa "^3.0.0"
+    pkg-dir "^2.0.0"
+    ts-protoc-gen "^0.8.0"
+
 "@radarrelay/tslint-config@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@radarrelay/tslint-config/-/tslint-config-5.0.0.tgz#c1bbb7daa780a609293c6d8e32b38d9af0459f72"
@@ -104,18 +116,6 @@
     tslint-config-airbnb "^5.11.0"
     tslint-config-prettier "^1.15.0"
     tslint-plugin-prettier "^2.0.0"
-
-"@radartech/lnrpc@^0.5.1-beta.0":
-  version "0.5.1-beta.0"
-  resolved "https://registry.yarnpkg.com/@radartech/lnrpc/-/lnrpc-0.5.1-beta.0.tgz#93921fb0b93091b52693550dd2044f16dc02defd"
-  integrity sha512-pcnn57wyzW186iTy8koQchJsP0QzJkz2hY93Xg0kYDVpo/4Af1yDl8VdEUZjUkMODGwWKU/WjloeWdDsygzznA==
-  dependencies:
-    "@grpc/proto-loader" "^0.3.0"
-    "@types/google-protobuf" "^3.2.7"
-    grpc "^1.14.0-pre2"
-    napa "^3.0.0"
-    pkg-dir "^2.0.0"
-    ts-protoc-gen "^0.8.0"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"

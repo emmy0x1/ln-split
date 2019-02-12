@@ -1,4 +1,3 @@
-import { Invoice, SendRequest } from '@radartech/lnrpc';
 import BigNumber from 'bignumber.js';
 import { NextFunction, Request, Response } from 'express';
 import { body, check, validationResult } from 'express-validator/check';

@@ -1,4 +1,4 @@
-import { LnRpc } from '@radartech/lnrpc';
+import { LnRpc } from '@radar/lnrpc';
 import { Lightning } from '../../../src/services/lnd';
 import { expect, lnrpcStub, rest } from '../../lib';
 

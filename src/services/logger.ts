@@ -1,4 +1,4 @@
-import { Invoice } from '@radartech/lnrpc';
+import { Invoice } from '@radar/lnrpc';
 import debug from 'debug';
 import * as fs from 'fs';
 import winston from 'winston';

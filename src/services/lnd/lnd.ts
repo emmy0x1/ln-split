@@ -1,4 +1,4 @@
-import createLnRpc, { LnRpc, LnRpcClientConfig } from '@radartech/lnrpc';
+import createLnRpc, { LnRpc, LnRpcClientConfig } from '@radar/lnrpc';
 
 export class Lightning {
   public static client: LnRpc;
