@@ -14,7 +14,7 @@
   "author": "RadarTech",
   "license": "MIT",
   "dependencies": {
-    "@radar/lnrpc": "^0.5.1-beta",
+    "@radar/lnrpc": "^0.5.2-beta.0",
     "bignumber.js": "^8.0.2",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
@@ -29,7 +29,7 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
-    "@radarrelay/tslint-config": "^5.0.0",
+    "@radar/tslint-config": "^5.0.0",
     "@types/body-parser": "1.17.0",
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
