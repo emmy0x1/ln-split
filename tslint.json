@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["@radarrelay/tslint-config"],
+  "extends": ["@radar/tslint-config"],
   "jsRules": {
     "no-cond-assign": [2, "always"],
     "no-constant-condition": 1,
