@@ -1,4 +1,3 @@
-import { Invoice } from '@radar/lnrpc';
 import debug from 'debug';
 import * as fs from 'fs';
 import winston from 'winston';
@@ -40,10 +39,3 @@ export const logger = winston.createLogger({
     }),
   ],
 });
-
-/**
- * @param invoice the Invoice Object to log
- */
-export function logInvoice(invoice: Invoice) {
-  logger.info(`[LND] Invoice log: ${invoice.paymentRequest}.`);
-}

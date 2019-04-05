@@ -1,11 +1,16 @@
-import { Invoice, InvoiceSubscription } from '@radar/lnrpc';
+import { Invoice } from '@radar/lnrpc';
 import { Lightning } from '.';
-import { logInvoice } from '../logger';
+import { logger } from '..';
+
+/**
+ * @param invoice the Invoice Object to log
+ */
+export function logInvoice(invoice: Invoice) {
+  logger.info(`[LND] Invoice log: ${invoice.paymentRequest}.`);
+}
 
 /**
  * Create subscribers to LND events with callback support
- * TODO add transaction event subscriber
- * TODO add channelgraph event subscriber
  *
  * @class LnRpcSubscriptionManager
  */
@@ -16,9 +21,7 @@ export class LnRpcSubscriptionManager {
     eventCallback: (invoice: Invoice) => void = logInvoice,
   ): Promise<void> {
     if (this._invoiceSubscriber === undefined) {
-      this._invoiceSubscriber = await Lightning.client.subscribeInvoices(<
-        InvoiceSubscription
-      >{});
+      this._invoiceSubscriber = await Lightning.client.subscribeInvoices();
     }
 
     this._invoiceSubscriber.on('data', (invoice: Invoice) => {
