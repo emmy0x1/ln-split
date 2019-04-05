@@ -1,5 +1,10 @@
 import createLnRpc, { LnRpc, LnRpcClientConfig } from '@radar/lnrpc';
 
+/**
+ * Manages the application LND client instance
+ *
+ * @class Lightning
+ */
 export class Lightning {
   public static client: LnRpc;
 
