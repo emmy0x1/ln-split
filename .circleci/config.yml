@@ -1,15 +1,18 @@
-version: 2
+version: 2.1
 
-dependencies: &dependencies
-  run:
-    name: Install Dependencies
-    command: yarn install
+
+
+orbs:
+  common: radar/common@1.0
+  node: radar/node@1.0
 
 run_tests: &run_tests
   working_directory: ~/project
   steps:
   - checkout
-  - *dependencies
+  - common/setup-gcp-gcr
+  - common/install-docker-compose
+  - node/install
   - run:
       name: Setup Integration Environment
       command: |
@@ -29,7 +32,6 @@ jobs:
     working_directory: ~/project
     steps:
     - checkout
-    - *dependencies
     - run: 
         name: Run Linter
         command: yarn lint
@@ -39,7 +41,6 @@ jobs:
     working_directory: ~/project
     steps:
     - checkout
-    - *dependencies
     - run: 
         name: Run Audit
         command: yarn audit
