@@ -62,7 +62,7 @@ workflows:
   default:
     jobs:
       - lint
-      - audit
+      # - audit
       - test-node-8
       - test-node-10
       - test-node-11
