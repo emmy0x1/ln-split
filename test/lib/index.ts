@@ -1,2 +1,3 @@
 export * from './chai';
-export * from './lnrpc-stub';
+export * from './functions';
+export * from './utils';

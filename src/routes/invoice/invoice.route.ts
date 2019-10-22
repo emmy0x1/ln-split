@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { NextFunction, Request, Response } from 'express';
-import { body, check, validationResult } from 'express-validator/check';
+import { body, check, validationResult } from 'express-validator';
 import { logger } from '../../services';
 import { Lightning } from '../../services/lnd';
 import { BaseRoute } from '../route';

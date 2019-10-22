@@ -8,24 +8,44 @@ A boilerplate example project for creating lightning-enabled applications
 
 ## Quickstart
 
+This project contains three simnet nodes for local testing. By default, the example environment variables in `.env.example` have been populated with values that target our simnet node. You can replace these values in your `.env` file to target your own node.
+
+### Install Dependencies
 ```sh
-$ yarn # OR npm install
-$ cp .env.example .env
-# set vars for accessing LND ie. LND_MACAROON_PATH
-$ yarn start # OR npm run start
+yarn
 ```
 
-## Test
+### Setup the simnet environment
+
+For more details on the simnet suite, read the [simnet suite](#simnet-suite) section.
 
 ```sh
-yarn test # OR npm run test
+scripts/simnet-setup.sh
 ```
 
-## Compile and run
+### Create your environment file
+
+As noted above, you can copy the values from `.env.example` to `.env` to get up and running against the local simnet node. Update the values in your `.env` file at any time to target your own node.
 
 ```sh
-yarn build # OR npm run build
-node build/index
+cp .env.example .env
+```
+
+### Run the application
+
+```sh
+yarn start
+```
+
+### Run tests
+
+```sh
+yarn test
+```
+
+### Compile for production
+```sh
+yarn build
 ```
 
 ## Usage
@@ -55,6 +75,43 @@ Pay a [bolt11](https://github.com/lightningnetwork/lightning-rfc/blob/master/11-
 $ curl -d "invoice=lntb10..." -X POST localhost:3000/api/invoice/pay
 # {"preimage":"649..."}
 ```
+
+## Simnet Suite
+
+The `simnet-setup.sh` script will start containers necessary for local testing.
+
+These include:
+* A bitcoin simnet node
+* Three Bitcoin LND nodes (with channels open to eachother)
+
+The channels have been opened in a cicular pattern. You can update the channel opening strategy in `scripts/simnet-setup.sh` if the current setup is not sufficient for your use-case.
+
+By default, channels have been opened in the following directions:
+
+![nodes](https://user-images.githubusercontent.com/20102664/67313907-0ae29e00-f4c1-11e9-8246-bd7aa41e6876.png)
+
+You can also interect with LND and BTCD using CLI commands.
+
+**Useful examples:**
+
+Generate a block:
+
+```sh
+docker-compose run simnet-btcctl generate 1
+```
+
+Create an invoice:
+
+```sh
+docker-compose exec simnet-lnd-btcd-alice lncli --chain bitcoin --network=simnet addinvoice 1000
+```
+
+Send on-chain funds from alice to an address:
+
+```sh
+docker-compose exec simnet-lnd-btcd-alice lncli --chain bitcoin --network=simnet sendcoins --addr=some_simnet_bitcoin_address --amt=100000
+```
+
 
 ## VS Code Debugging
 

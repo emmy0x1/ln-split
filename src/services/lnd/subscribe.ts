@@ -21,7 +21,7 @@ export class LnRpcSubscriptionManager {
     eventCallback: (invoice: Invoice) => void = logInvoice,
   ): Promise<void> {
     if (this._invoiceSubscriber === undefined) {
-      this._invoiceSubscriber = await Lightning.client.subscribeInvoices();
+      this._invoiceSubscriber = Lightning.client.subscribeInvoices();
     }
 
     this._invoiceSubscriber.on('data', (invoice: Invoice) => {
