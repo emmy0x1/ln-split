@@ -11,7 +11,12 @@ run_tests: &run_tests
   - checkout
   - *dependencies
   - run:
-      name: Setup Env
+      name: Setup Integration Environment
+      command: |
+        source ~/.bashrc
+        scripts/simnet-setup.sh ci
+  - run:
+      name: Setup Environment Variables
       command: cp .env.test .env
   - run: 
       name: Run Tests
