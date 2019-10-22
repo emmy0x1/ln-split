@@ -32,6 +32,14 @@ class LnRpcClientFactory {
       config.tls = process.env.LND_CERT_PATH;
     }
 
+    if (process.env.LND_MACAROON) {
+      config.macaroon = process.env.LND_MACAROON;
+    }
+
+    if (process.env.LND_CERT) {
+      config.cert = process.env.LND_CERT;
+    }
+
     return createLnRpc(config);
   }
 }
