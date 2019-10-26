@@ -3,7 +3,10 @@ node_modules/
 build/
 .DS_Store
 *.log
-logs
+logs/
 
 # Webpack output
 dist/
+
+# Debugging
+.vscode

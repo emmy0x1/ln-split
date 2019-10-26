@@ -21,9 +21,7 @@ module.exports = {
     ]
   },
   plugins: [
-    // Adds our .env variables to the build
     new DotenvPlugin({ path: "../.env", systemvars: true }),
-    // Takes our index.html template, and injects our build into it
     new HtmlWebpackPlugin({
       template: `${clientDir}/index.html`,
       inject: true
