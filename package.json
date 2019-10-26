@@ -7,7 +7,7 @@
     "build": "tsc -p .",
     "start": "nodemon --ext ts --watch ./src --exec \"npm run dev\"",
     "test": "NODE_ENV=test mocha 'test/**/*.test.ts'",
-    "dev:client": "node client/index.js",
+    "dev:client": "webpack-dev-server --config ./client/webpack.config.js",
     "dev:server": "ts-node --type-check src/index.ts",
     "lint": "tslint -c tslint.json '{src,test}/**/*.ts' --fix",
     "clean": "rm -rf ./build"
@@ -15,6 +15,9 @@
   "author": "RadarTech",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
     "@radar/lnrpc": "^0.8.0-beta.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
@@ -26,16 +29,17 @@
     "cors": "^2.8.4",
     "debug": "^3.1.0",
     "dotenv": "^6.2.0",
+    "dotenv-webpack": "^1.7.0",
     "errorhandler": "^1.5.0",
     "express": "^4.17.1",
     "express-validator": "^6.0.0",
+    "global": "^4.4.0",
     "helmet": "^3.21.1",
+    "html-webpack-plugin": "^3.2.0",
     "morgan": "^1.9.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-hot-loader": "^4.12.15",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
     "winston": "^3.0.0"
   },
   "devDependencies": {
@@ -66,6 +70,8 @@
     "ts-node": "^8.0.2",
     "tslint": "^5.10.0",
     "typescript": "^3.0.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.9.0"
   },
   "husky": {
