@@ -7,8 +7,8 @@
     "test": "NODE_ENV=test mocha './server/test/**/*.test.ts'",
     "dev": "concurrently -n server,client \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "webpack-dev-server --config ./client/webpack.config.js",
-    "dev:server": "ts-node ./server/src/index.ts",
-    "lint": "tslint -c tslint.json 'server/{src,test}/**/*.ts' --fix",
+    "dev:server": "ts-node --project server/tsconfig.json server/src/index.ts",
+    "lint": "tslint -c server/tslint.json 'server/{src,test}/**/*.ts' --fix",
     "clean": "rm -rf ./build"
   },
   "dependencies": {
