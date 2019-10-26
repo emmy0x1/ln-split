@@ -106,6 +106,12 @@ Create an invoice:
 docker-compose exec simnet-lnd-btcd-alice lncli --chain bitcoin --network=simnet addinvoice 1000
 ```
 
+Pay an invoice from charlie
+
+```sh
+docker-compose exec simnet-lnd-btcd-charlie lncli --chain bitcoin --network=simnet payinvoice {bolt11}
+```
+
 Send on-chain funds from alice to an address:
 
 ```sh

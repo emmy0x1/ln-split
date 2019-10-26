@@ -10,3 +10,6 @@ dist/
 
 # Debugging
 .vscode
+
+# Intellij
+.idea
