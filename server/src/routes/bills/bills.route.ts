@@ -1,14 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger } from '../../services';
 import { BaseRoute } from '../route';
-const pg = require('pg');
-
-const config = {
-  user: 'postgres',
-  database: 'postgres',
-  password: 'postgres',
-  port: 5432,
-};
+const db = require('../../../../db/dbConnection');
 
 /**
  * @api {get} /bills Bills
@@ -56,24 +49,15 @@ export class BillsRoute extends BaseRoute {
     try {
       logger.info(`[BillsRoute] Retrieving all bills.`);
 
-      const pool = new pg.Pool(config);
-      await pool.connect((err: any, client: any, done: any) => {
+      await db.query('SELECT * FROM bills', [], (err: any, result: any) => {
         if (err) {
-          logger.info(`not able to make connection ${err}`);
+          logger.info('not able to make query');
           next();
         }
 
-        client.query('SELECT * FROM bills', (err: any, result: any) => {
-          done();
-          if (err) {
-            logger.info('not able to make query');
-            next();
-          }
-
-          console.log(`retrieved rows: ${result.rows.length}`);
-          res.json(result.rows);
-          next();
-        });
+        console.log(`retrieved rows: ${result.rows.length}`);
+        res.json(result.rows);
+        next();
       });
     } catch (err) {
       logger.error(`Caught error: ${err.message}`);
