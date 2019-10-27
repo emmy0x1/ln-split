@@ -1,3 +1,4 @@
+require("dotenv").config();
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotenvPlugin = require("dotenv-webpack");
 const webpack = require("webpack");
@@ -39,7 +40,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new DotenvPlugin({ path: "../.env", systemvars: true }),
+    new DotenvPlugin({ path: ".env", systemvars: true }),
     new HtmlWebpackPlugin({
       template: `${clientDir}/index.html`,
       inject: true

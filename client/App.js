@@ -1,4 +1,5 @@
 import React from "react";
+import api from "./lib/api";
 import "./css/tailwind.css";
 
 export default class App extends React.Component {
