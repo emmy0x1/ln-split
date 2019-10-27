@@ -5,7 +5,10 @@ create table if not exists users
 	id serial not null
 		constraint users_pk
 			primary key,
-	name varchar(256)
+	name varchar(256),
+	emailaddress varchar(32),
+	passwordhash varchar(256),
+	salt varchar(256)
 );
 
 alter table users owner to postgres;
@@ -35,8 +38,8 @@ create unique index if not exists bills_id_uindex
 
 -- sample data
 
-insert into users (name)
-values ('Anthony');
+insert into users (name, emailaddress, passwordhash, salt)
+values ('Anthony', 'anthonyronning@gmail.com', '9c8f0c08c35979f61c58e9293a91401325a04754d2fd0ddd9b12aa0cd89764f6fec3fd7e24e9f83522db009678d73e85f9e720c6ac3024cd2e053596521bba1c', '0040439ad3a0a195');
 
 insert into bills (name, description, amount, currency, createdby)
 values ('Test bill', 'Test description', 100, 'USD', 1);
