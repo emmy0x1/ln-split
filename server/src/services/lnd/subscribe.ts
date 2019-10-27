@@ -6,7 +6,11 @@ import { logger } from '..';
  * @param invoice the Invoice Object to log
  */
 export function logInvoice(invoice: Invoice) {
-  logger.info(`[LND] Invoice log: ${invoice.paymentRequest}.`);
+  if (invoice.settled) {
+    logger.info(`[LND] Paid Invoice: ${invoice.paymentRequest}.`);
+  } else {
+    logger.info(`[LND] New Invoice: ${invoice.paymentRequest}.`);
+  }
 }
 
 /**
