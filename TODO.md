@@ -5,3 +5,6 @@ Emmy
 - Generate invoice and display QR code
 
 Anthony
+
+- Log in (Almost done, gotta clean up)
+- Register (tomorrow)
