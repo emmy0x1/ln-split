@@ -50,7 +50,7 @@ module.exports = {
     modules: [clientDir, path.join(__dirname, "../node_modules")]
   },
   devServer: {
-    port: 3000,
+    port: 3001,
     hot: true,
     stats: "minimal"
   }
