@@ -15,7 +15,7 @@ class SplitBill extends React.Component {
             onClick={this.toggleAddFriend}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Split the bill
+            New Bill
           </button>
         </Link>
       </div>
