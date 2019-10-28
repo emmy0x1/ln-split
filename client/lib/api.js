@@ -3,6 +3,7 @@ class API {
     this.url = process.env.API_PATH;
   }
 
+  // Bills Route
   getBills() {
     return this.request("GET", "/bills", {});
   }
@@ -13,6 +14,12 @@ class API {
     // { payerEmail: "e@gmail.com", friendEmail: "j@gmail.com", totalAmount: "90" }
     payload = {};
     return this.request("POST", "/bill", payload);
+  }
+
+  // Users Route
+  userLogin(emailAddress, password) {
+    const payload = {emailAddress, password};
+    return this.request("POST", "/users/login", payload);
   }
 
   // Internal function to make requests to server
