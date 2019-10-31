@@ -3,7 +3,7 @@ import { Link, navigate } from "@reach/router";
 import api from "./lib/api";
 import userContext from "./context/userContext";
 
-class Login extends React.Component {
+class Register extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -23,19 +23,23 @@ class Login extends React.Component {
         {({user, loginUser}) => {
           return (
             <div className="p-64">
-              <form
+              <forms
                     onSubmit=
                       {evt => {
                         {/* todo put in own function  */}
                         evt.preventDefault();
-                        api.userLogin(this.state.emailAddress, this.state.password)
+                        api.userRegister(this.state.emailAddress, this.state.password)
                           .then(user => {
+                            if (user.error) {
+                              console.error(user.error);
+                              return;
+                            }
                             console.log(user);
                             this.setState({user: user});
                             loginUser(user);
                             navigate('/split-bill');
                           });
-              }}>
+                      }}>
 
                 <label>Email Address</label>
                 <input
@@ -56,9 +60,9 @@ class Login extends React.Component {
                 />
 
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Login
+                  Register
                 </button>
-              </form>
+              </forms>
             </div>
           );
         }}
@@ -67,4 +71,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Register;

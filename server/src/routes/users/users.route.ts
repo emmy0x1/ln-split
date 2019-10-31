@@ -111,13 +111,13 @@ export class UsersRoute extends BaseRoute {
 
     // Save user
     await db.query(
-      'INSERT INTO users ("emailAddress", "passwordHash", salt) VALUES ($1, $2, $3) RETURNING id',
+      'INSERT INTO users ("emailAddress", "passwordHash", salt) VALUES ($1, $2, $3) RETURNING id, name, "emailAddress"',
       [emailAddress, passwordHash, salt],
       (error: any, results: any) => {
         if (error) {
           throw error;
         }
-        res.status(201).json(results.rows[0].id);
+        res.status(201).json(results.rows[0]);
       },
     );
   }

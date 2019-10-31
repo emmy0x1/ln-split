@@ -7,6 +7,7 @@ import Landing from "./Landing";
 import userContext from "./context/userContext";
 // import api from "./lib/api";
 import "./css/tailwind.css";
+import Register from "./Register";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,12 +24,16 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    const userJson = localStorage.getItem('user');
+    this.checkUserLogIn();
+  }
+
+  checkUserLogIn() {
+    const userJson = localStorage.getItem("user");
     if (userJson) {
       const user = JSON.parse(userJson);
       console.log(user);
-      this.setState({user: user});
-      navigate('/split-bill');
+      this.setState({ user: user });
+      navigate("/split-bill");
     }
   }
 
@@ -48,6 +53,7 @@ export default class App extends React.Component {
             <SplitBill path="/split-bill" />
             <CreateBill path="/create-bill" />
             <Login path="/login" />
+            <Register path="/register" />
           </Router>
         </userContext.Provider>
       </div>

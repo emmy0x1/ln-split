@@ -22,6 +22,11 @@ class API {
     return this.request("POST", "/users/login", payload);
   }
 
+  userRegister(emailAddress, password) {
+    const payload = {emailAddress, password};
+    return this.request("POST", "/users", payload);
+  }
+
   // Internal function to make requests to server
   request(method, path, args) {
     let body = null;
