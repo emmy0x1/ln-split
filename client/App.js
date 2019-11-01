@@ -4,10 +4,10 @@ import SplitBill from "./SplitBill";
 import CreateBill from "./CreateBill";
 import Login from "./Login";
 import Landing from "./Landing";
+import Register from "./Register";
 import userContext from "./context/userContext";
 // import api from "./lib/api";
 import "./css/tailwind.css";
-import Register from "./Register";
 
 export default class App extends React.Component {
   constructor(props) {
