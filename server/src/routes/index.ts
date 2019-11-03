@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { logger } from '../services';
 import { BillsRoute } from './bills';
+import { FundsRoute } from './funds';
 import { InvoiceRoute } from './invoice';
 import { PingRoute } from './ping';
 import { BaseRoute } from './route';
@@ -49,6 +50,7 @@ export class ApiRoutes extends BaseRoute {
     this.router.use(InvoiceRoute.path, InvoiceRoute.router);
     this.router.use(BillsRoute.path, BillsRoute.router);
     this.router.use(UsersRoute.path, UsersRoute.router);
+    this.router.use(FundsRoute.path, FundsRoute.router);
   }
 
   /**
