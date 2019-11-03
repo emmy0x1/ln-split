@@ -6,5 +6,7 @@ Emmy
 
 Anthony
 
-- Log in (Almost done, gotta clean up)
-- Register (tomorrow)
+- redeem funds
+  - paste an invoice
+  - redeem via lnurl
+  - simple funds controller that just displays a hardcoded ammount for now
