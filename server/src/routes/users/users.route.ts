@@ -3,6 +3,7 @@ import { body, check, validationResult } from 'express-validator';
 import { logger } from '../../services';
 import { CryptoUtility } from '../../utilities/CryptoUtility';
 import { BaseRoute } from '../route';
+import { User } from './user';
 const db = require('../../../../db/dbConnection');
 
 /**
@@ -61,7 +62,7 @@ export class UsersRoute extends BaseRoute {
       logger.info(`[UsersRoute] Retrieving all users.`);
 
       await db.query(
-        'SELECT id, emailaddress FROM users',
+        'SELECT id, "emailAddress" FROM users',
         [],
         (err: any, result: any) => {
           if (err) next();
@@ -110,13 +111,13 @@ export class UsersRoute extends BaseRoute {
 
     // Save user
     await db.query(
-      'INSERT INTO users (emailaddress, passwordhash, salt) VALUES ($1, $2, $3) RETURNING id',
+      'INSERT INTO users ("emailAddress", "passwordHash", salt) VALUES ($1, $2, $3) RETURNING id, name, "emailAddress"',
       [emailAddress, passwordHash, salt],
       (error: any, results: any) => {
         if (error) {
           throw error;
         }
-        res.status(201).json(results.rows[0].id);
+        res.status(201).json(results.rows[0]);
       },
     );
   }
@@ -153,21 +154,23 @@ export class UsersRoute extends BaseRoute {
     // Check user password with hashed password saved in the db
     const salt = user.salt;
     const passwordHash = CryptoUtility.sha512(password, salt);
-    if (user.passwordhash !== passwordHash) {
+    if (user.passwordHash !== passwordHash) {
       logger.error('user password does not match.');
       res.status(400).json({ error: 'Incorrect email / password' });
       next();
       return;
     }
 
-    res.status(200).json(user.id);
+    // todo sanitize, somehow below doesn't work??
+    // user.sanitize();
+    res.status(200).json(user);
   }
 }
 
 export async function checkEmailAddressExisting(emailAddress: string) {
   return new Promise<boolean>(res => {
     db.query(
-      'SELECT count(*) FROM users WHERE emailaddress = $1',
+      'SELECT count(*) FROM users WHERE "emailAddress" = $1',
       [emailAddress],
       (error: any, results: any) => {
         if (error) {
@@ -184,10 +187,12 @@ export async function checkEmailAddressExisting(emailAddress: string) {
   });
 }
 
-export async function findUserByEmailAddress(emailAddress: string) {
-  return new Promise<any>(res => {
+export async function findUserByEmailAddress(
+  emailAddress: string,
+): Promise<User> {
+  return new Promise<User>(res => {
     db.query(
-      'SELECT * FROM users WHERE emailaddress = $1',
+      'SELECT * FROM users WHERE "emailAddress" = $1',
       [emailAddress],
       (error: any, results: any) => {
         if (error) {
