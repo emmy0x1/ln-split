@@ -11,7 +11,7 @@ create table if not exists users
 	salt varchar(256)
 );
 
-alter table users owner to postgres;
+alter table users owner to lapp;
 
 create unique index if not exists users_id_uindex
 	on users (id);
@@ -26,11 +26,9 @@ create table if not exists bills
 	amount double precision,
 	currency varchar(10),
 	"createdBy" integer
-		constraint bills_users_id_fk
-			references users
 );
 
-alter table bills owner to postgres;
+alter table bills owner to lapp;
 
 create unique index if not exists bills_id_uindex
 	on bills (id);
