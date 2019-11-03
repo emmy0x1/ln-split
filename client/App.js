@@ -8,6 +8,7 @@ import Register from "./Register";
 import userContext from "./context/userContext";
 // import api from "./lib/api";
 import "./css/tailwind.css";
+import Redeem from "./Redeem";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class App extends React.Component {
             <CreateBill path="/create-bill" />
             <Login path="/login" />
             <Register path="/register" />
+            <Redeem path="/redeem" />
           </Router>
         </userContext.Provider>
       </div>

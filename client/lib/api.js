@@ -27,10 +27,15 @@ class API {
     return this.request("POST", "/users", payload);
   }
 
+  // Funds Route
+  availableFunds(userId) {
+    const query = `?userId=${userId}`;
+    return this.request("GET", "/funds/available", null, query);
+  }
+
   // Internal function to make requests to server
-  request(method, path, args) {
+  request(method, path, args, query = "") {
     let body = null;
-    const query = "";
     const headers = new Headers();
     headers.append("Accept", "application/json");
 
