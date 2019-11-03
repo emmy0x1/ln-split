@@ -1,20 +1,20 @@
-import React from "react";
-import api from "./lib/api";
+import React, { useState } from "react";
+import { Router, Link } from "@reach/router";
+import SplitBill from "./SplitBill";
+import CreateBill from "./CreateBill";
+// import api from "./lib/api";
 import "./css/tailwind.css";
 
 export default class App extends React.Component {
   render() {
     return (
-      <div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Split the bill
-        </button>
+      <div className="container mx-auto">
+        <header>{/* <Link to="/"></Link> */}</header>
 
-        <input
-          className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
-          type="email"
-          placeholder="john.doe@example.com"
-        />
+        <Router>
+          <SplitBill path="/" />
+          <CreateBill path="/create-bill" />
+        </Router>
       </div>
     );
   }

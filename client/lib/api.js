@@ -7,6 +7,14 @@ class API {
     return this.request("GET", "/bills", {});
   }
 
+  createBill(payer, totalAmount, friends) {
+    // create object with payload
+    // sample payload:
+    // { payerEmail: "e@gmail.com", friendEmail: "j@gmail.com", totalAmount: "90" }
+    payload = {};
+    return this.request("POST", "/bill", payload);
+  }
+
   // Internal function to make requests to server
   request(method, path, args) {
     let body = null;
