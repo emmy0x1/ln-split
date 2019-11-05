@@ -23,6 +23,8 @@ class RedeemComponent extends React.Component {
 
   redeemClicked() {
     this.setState({redeem: true});
+    this.setState({paid: false});
+    this.setState({paymentError: null});
   }
 
   withdrawal(evt) {
@@ -36,20 +38,29 @@ class RedeemComponent extends React.Component {
           this.setState({paid: false})
         } else {
           console.log("SUCCESSFULLY PAID INVOICE!!!");
+          this.setState({paymentError: null})
           this.setState({paid: true})
+          this.setState({redeem: false})
+
+          // refresh funds state
+          this.checkAvailableFunds();
         }
       })
   }
 
   componentDidMount() {
+    this.checkAvailableFunds();
+  }
+
+  checkAvailableFunds() {
     api.availableFunds(this.props.user.id)
       .then(r => {
         if (r.error) {
           console.error(r.error);
         } else {
-          this.setState({available: r.available});
+          this.setState({ available: r.available });
         }
-      })
+      });
   }
 
   render() {

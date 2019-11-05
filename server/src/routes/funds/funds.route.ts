@@ -4,6 +4,7 @@ import { body, check, validationResult } from 'express-validator';
 import { logger } from '../../services';
 import { Lightning } from '../../services/lnd';
 import { BaseRoute } from '../route';
+const db = require('../../../../db/dbConnection');
 
 /**
  * @api {get} /funds Funds
@@ -70,9 +71,9 @@ export class FundsRoute extends BaseRoute {
       `[FundsRoute] Retrieving available funds for user ${req.query.userId}.`,
     );
 
-    // todo figure out how much the user has available
-    // const userId = req.params.userId;
-    res.json({ available: 5000 });
+    const userId = req.query.userId;
+    const availableFunds = await this.getAvailableFunds(userId);
+    res.json({ available: availableFunds });
   }
 
   /**
@@ -93,11 +94,18 @@ export class FundsRoute extends BaseRoute {
       return;
     }
 
-    // TODO validation that invoice amount is less than available for user
+    // checking invoice amount against user's available balance
     const { numSatoshis } = await Lightning.client.decodePayReq({
       payReq: req.body.invoice,
     });
     console.log(`trying to pay an invoice for amount: ${numSatoshis}`);
+
+    const userId = req.body.userId;
+    const totalAvailable = await this.getAvailableFunds(userId);
+    if (Number(numSatoshis) > totalAvailable) {
+      res.status(400).json({ error: 'Invoice amount too high.' });
+      return;
+    }
 
     try {
       const {
@@ -110,6 +118,18 @@ export class FundsRoute extends BaseRoute {
         throw new Error(paymentError);
       }
 
+      // subtract paid amount from user
+      await db.query(
+        'INSERT INTO funds ("userId", amount) VALUES ($1, $2)',
+        [userId, 0 - Number(numSatoshis)],
+        (error: any, results: any) => {
+          if (error) {
+            // lol we already paid tho.. todo something else?
+            throw error;
+          }
+        },
+      );
+
       const preimage = (paymentPreimage as Buffer).toString('hex');
       logger.info(
         `[FundsRoute] /withdrawal payment complete for preimage: ${preimage}.`,
@@ -121,5 +141,20 @@ export class FundsRoute extends BaseRoute {
       logger.info(`[FundsRoute] /withdrawal error: ${err}.`);
       res.status(400).json({ error: err.message });
     }
+  }
+
+  private async getAvailableFunds(userId: number) {
+    return new Promise<number>(res => {
+      db.query(
+        'SELECT sum(amount) FROM funds WHERE "userId" = $1',
+        [userId],
+        (error: any, results: any) => {
+          if (error) {
+            throw error;
+          }
+          res(results.rows[0].sum || 0);
+        },
+      );
+    });
   }
 }

@@ -34,7 +34,7 @@ class API {
   }
 
   withdrawalFunds(userId, invoice) {
-    const payload = {invoice};
+    const payload = {userId, invoice};
     return this.request("POST", "/funds/withdrawal", payload);
   }
 
