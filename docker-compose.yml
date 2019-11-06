@@ -59,10 +59,5 @@ services:
       - POSTGRES_USER:lapp
       - POSTGRES_PASSWORD=lapp
       - POSTGRES_DB=lapp
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
