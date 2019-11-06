@@ -41,7 +41,7 @@ create table if not exists funds
 	date timestamp with time zone default now()
 );
 
-alter table funds owner to postgres;
+alter table funds owner to lapp;
 
 -- sample data
 
