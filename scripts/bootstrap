@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+cat <<"EOF"
+* * * * * * * * * * * * * * * * * * * * * *
+*          LApp Bootstrap Script          *
+* * * * * * * * * * * * * * * * * * * * * *
+EOF
+
+# Verify that Node.js is installed
+command -v node >/dev/null 2>&1 || {
+  echo >&2 "You need to install Node.js first.";
+  exit 1;
+}
+
+# Verify that Yarn is installed
+command -v yarn >/dev/null 2>&1 || {
+  echo >&2 "You need to install Yarn first.";
+  exit 1;
+}
+
+# Verify that PostgreSQL is installed
+command -v psql >/dev/null 2>&1 || {
+  echo >&2 "You need to install PostgreSQL first.";
+  exit 1;
+}
+
+# Copy environment variable config
+cp -n .env.example .env
+
+# Install dependencies
+echo "==> Installing Node.js dependencies"
+yarn
+
+# Setup the local database
+docker-compose up db
+
+# Seed the database
