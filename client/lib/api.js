@@ -33,6 +33,11 @@ class API {
     return this.request("GET", "/funds/available", null, query);
   }
 
+  withdrawalFunds(userId, invoice) {
+    const payload = {userId, invoice};
+    return this.request("POST", "/funds/withdrawal", payload);
+  }
+
   // Internal function to make requests to server
   request(method, path, args, query = "") {
     let body = null;
