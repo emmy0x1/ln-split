@@ -16,7 +16,7 @@ services:
       links:
         - "simnet-btcd:rpcserver"
       entrypoint: ["./start-btcctl.sh"]
-      
+
     simnet-lnd-btcd-alice:
       image: radarion/lnd-integration-alice-btcd:v1.2.1-beta
       container_name: simnet-lnd-btcd-alice
@@ -56,8 +56,8 @@ services:
       ports:
         - "5432:5432"
       environment:
-        POSTGRES_USER: 'postgres'
-        POSTGRES_PASSWORD: 'postgres'
-        POSTGRES_DB: 'postgres'
+        POSTGRES_USER: 'lapp'
+        POSTGRES_PASSWORD: 'lapp'
+        POSTGRES_DB: 'lapp'
       volumes:
         - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
