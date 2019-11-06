@@ -34,6 +34,13 @@ echo "==> Installing Node.js dependencies"
 yarn
 
 # Setup the local database
-docker-compose up db
+# echo "==> Setting up database."
+# psql --variable=ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
+#     CREATE ROLE lapp WITH LOGIN PASSWORD 'lapp';
+#     CREATE DATABASE "lapp" OWNER = lapp;
+#     GRANT ALL PRIVILEGES ON DATABASE "lapp" TO lapp;
+# EOSQL
+
 
 # Seed the database
+docker-compose up db

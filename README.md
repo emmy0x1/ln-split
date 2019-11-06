@@ -12,16 +12,14 @@ This project contains three simnet nodes for local testing. By default, the exam
 
 ### Setup the simnet environment
 
-For more details on the simnet suite, read the [simnet suite](#simnet-suite) section.
-
 ```sh
 scripts/simnet-setup.sh
 ```
 
-### Run bootstrap script to install dependencies and create development database
+### Install dependencies and create development database
 
 ```
-scripts/bootstrap
+scripts/bootstrap.sh
 ```
 
 ### Run the application
