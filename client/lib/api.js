@@ -18,12 +18,12 @@ class API {
 
   // Users Route
   userLogin(emailAddress, password) {
-    const payload = {emailAddress, password};
+    const payload = { emailAddress, password };
     return this.request("POST", "/users/login", payload);
   }
 
   userRegister(emailAddress, password) {
-    const payload = {emailAddress, password};
+    const payload = { emailAddress, password };
     return this.request("POST", "/users", payload);
   }
 
@@ -43,7 +43,18 @@ class API {
 
     return fetch(this.url + path + query, { method, headers, body })
       .then(async res => {
-        // TODO: handle if bad request
+        if (!res.ok) {
+          let errMsg;
+
+          try {
+            const errBody = await res.json();
+            if (!errBody.error) throw new Error();
+            errMsg = errBody.error;
+          } catch {
+            throw new Error(`${res.status}: ${res.statusText}`);
+          }
+          throw new Error(errMsg);
+        }
         return res.json();
       })
       .catch(err => {
