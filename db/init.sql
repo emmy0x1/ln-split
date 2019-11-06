@@ -35,6 +35,15 @@ alter table bills owner to postgres;
 create unique index if not exists bills_id_uindex
 	on bills (id);
 
+create table if not exists funds
+(
+	id serial not null,
+	"userId" integer not null,
+	amount double precision not null,
+	date timestamp with time zone default now()
+);
+
+alter table funds owner to postgres;
 
 -- sample data
 
@@ -43,3 +52,5 @@ values ('Anthony', 'anthonyronning@gmail.com', '9c8f0c08c35979f61c58e9293a914013
 
 insert into bills (name, description, amount, currency, "createdBy")
 values ('Test bill', 'Test description', 100, 'USD', 1);
+
+insert into funds ("userId", amount) values (1, 25000);
