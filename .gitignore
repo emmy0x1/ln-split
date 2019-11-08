@@ -13,3 +13,6 @@ dist/
 
 # Intellij
 .idea
+
+# Make http calls in VSCode
+client.http

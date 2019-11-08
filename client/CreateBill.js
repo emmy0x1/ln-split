@@ -1,75 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
 import api from "./lib/api";
 
-class CreateBill extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      payer: "user@example.com",
-      friendEmail: "",
-      friends: {}
-      // totalAmount: 0.0,
-      // userAmount: 0.0,
-      // friendAmount: 0.0
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const CreateBill = () => {
+  const [billState, setBillState] = useState({
+    description: ""
+  });
+  const blankUser = { name: "", amount: "" };
+  const [userState, setUserState] = useState([{ ...blankUser }]);
 
-  handleChange(evt) {
-    this.setState({ [evt.target.name]: evt.target.value });
-  }
+  const handleBillChange = e =>
+    setBillState({
+      ...billState,
+      [e.target.name]: [e.target.value]
+    });
 
-  handleSubmit(evt) {
+  const handleUserChange = e => {
+    const updatedUsers = [...userState];
+    updatedUsers[e.target.dataset.idx][e.target.dataset.type] = e.target.value;
+    setUserState(updatedUsers);
+  };
+
+  const addUser = () => {
+    setUserState([...userState, { ...blankUser }]);
+  };
+
+  const handleSubmit = evt => {
     evt.preventDefault();
-    const formData = this.state;
+    console.log(billState);
+    console.log(userState);
+  };
 
-    api.createBill(formData);
-  }
+  return (
+    <form className="p-64" onSubmit={handleSubmit}>
+      <label htmlFor="description">Description</label>
+      <input
+        className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block  appearance-none leading-normal"
+        type="text"
+        name="description"
+        id="description"
+      />
+      <input
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        type="button"
+        value="Add User"
+        onClick={addUser}
+      />
 
-  render() {
-    return (
-      <form className="p-64" onSubmit={this.handleSubmit}>
-        <label>What was the total?</label>
-        <input
-          className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
-          type="number"
-          name="totalAmount"
-          placeholder="$20"
-          onChange={this.handleChange}
-        />
+      {userState.map((val, idx) => {
+        const userId = `name-${idx}`;
+        const amountId = `amount-${idx}`;
+        return (
+          <div key={`user-${idx}`}>
+            <label htmlFor={userId}>{`User #${idx + 1}`}</label>
+            <input
+              className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block  appearance-none leading-normal"
+              data-type="name"
+              type="text"
+              name={userId}
+              data-idx={idx}
+              id={userId}
+              value={userState[idx].name}
+              onChange={handleUserChange}
+            />
+            <label htmlFor={amountId}>Amount</label>
+            <input
+              className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block  appearance-none leading-normal"
+              data-type="amount"
+              type="number"
+              name={amountId}
+              data-idx={idx}
+              id={amountId}
+              value={userState[idx].amount}
+              onChange={handleUserChange}
+            />
+          </div>
+        );
+      })}
 
-        <label>Who paid?</label>
-
-        <input
-          className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
-          type="email"
-          name="payer"
-          placeholder="john.doe@example.com"
-          onChange={this.handleChange}
-        />
-
-        {/* Logged in user */}
-
-        <label>Who else are you splitting the bill with?</label>
-
-        {/* Friend */}
-        <div className="py-1">
-          <input
-            className="focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 w-full"
-            name="friendEmail"
-            // value={this.state.friendEmail}
-            placeholder="john.doe@example.com"
-            onChange={this.handleChange}
-          />
-        </div>
-
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Split
-        </button>
-      </form>
-    );
-  }
-}
+      <input
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        type="submit"
+        value="Submit"
+      />
+    </form>
+  );
+};
 
 export default CreateBill;

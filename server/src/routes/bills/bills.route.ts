@@ -21,6 +21,7 @@ export class BillsRoute extends BaseRoute {
   private constructor() {
     super();
     this.get = this.get.bind(this);
+    // TODO: Validation check here
     this.init();
   }
 
@@ -34,6 +35,7 @@ export class BillsRoute extends BaseRoute {
   private init() {
     logger.info('[BillsRoute] Creating bills route.');
     this.router.get('/', this.get);
+    this.router.get('/create', this.createBill);
   }
 
   /**
@@ -59,6 +61,46 @@ export class BillsRoute extends BaseRoute {
         res.json(result.rows);
         next();
       });
+    } catch (err) {
+      logger.error(`Caught error: ${err.message}`);
+      res.status(400).json({ error: err.message });
+      next();
+    }
+  }
+
+  /**
+   * Create bill
+   * @class BillsRoute
+   * @method post
+   * @param req {Request}
+   * @param res {Response}
+   * @param next {NextFunction}
+   */
+
+  private async createBill(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.info(`[BillsRoute] Creating a new bill.`);
+
+      const name = req.body.name || null;
+      const description = req.body.description || null;
+      const amount = req.body.amount;
+      const currency = req.body.currency;
+      const createdBy = req.body.userId;
+
+      await db.query(
+        'INSERT INTO bills (name, description, amount, currency, "createdBy") VALUES ($1, $2, $3) RETURNING id"',
+        [name, description, amount, currency, createdBy],
+        (err: any, result: any) => {
+          if (err) {
+            logger.info('not able to make query');
+            next();
+          }
+
+          console.log(`retrieved rows: ${result.rows.length}`);
+          res.json(result.rows);
+          next();
+        },
+      );
     } catch (err) {
       logger.error(`Caught error: ${err.message}`);
       res.status(400).json({ error: err.message });
