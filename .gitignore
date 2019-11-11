@@ -16,3 +16,7 @@ dist/
 
 # Make http calls in VSCode
 client.http
+
+# LNURL makes these for some reason
+/tls.cert
+/tls.key
