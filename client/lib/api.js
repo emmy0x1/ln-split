@@ -9,19 +9,15 @@ class API {
 
   // TODO:
 
-  createBill(billInfo, userAmounts) {
-    console.log(billInfo); // {description: ["john"], totalAmount: ["2000"]}
-    console.log(userAmounts); // array of objects
+  createBill(originalBill, userAmounts) {
+    originalBill = { description: ["lunch"], totalAmount: ["200"] };
+    userAmounts = [
+      { name: "john", amount: "100" },
+      { name: "an", amount: "100" }
+    ];
 
-    // Calculates the total amount owed by each user.
-    ledger = {};
-    for (const key in originalBill) {
-      if (originalBill.hasOwnProperty(key)) {
-        ledger[key] = originalBill[key] - split[key];
-      }
-    }
+    const payload = { originalBill, userAmounts };
 
-    payload = { originalBill, ledger, billTotal };
     return this.request("POST", "/bills/create", payload);
   }
 
