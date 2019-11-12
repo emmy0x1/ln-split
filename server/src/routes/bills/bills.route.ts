@@ -35,7 +35,7 @@ export class BillsRoute extends BaseRoute {
   private init() {
     logger.info('[BillsRoute] Creating bills route.');
     this.router.get('/', this.get);
-    this.router.get('/create', this.createBill);
+    this.router.post('/create', this.createBill);
   }
 
   /**
