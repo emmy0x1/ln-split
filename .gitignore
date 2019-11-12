@@ -14,5 +14,7 @@ dist/
 # Intellij
 .idea
 
-# Make http calls in VSCode
+Code snippets
+snippets.js
+
 client.http

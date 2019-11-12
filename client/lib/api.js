@@ -3,25 +3,15 @@ class API {
     this.url = process.env.API_PATH;
   }
 
-  // Bills Route
   getBills() {
     return this.request("GET", "/bills", {});
   }
 
-  createBill(originalBill, billTotal) {
-    // const originalBill = {
-    //   "e@gmail.com": 90,
-    //   "test@gmail.com": 10,
-    //   "name@gmail.com": 0
-    // };
+  // TODO:
 
-    // const split = {
-    //   "e@gmail.com": 30,
-    //   "test@gmail.com": 40,
-    //   "name@gmail.com": 30
-    // };
-
-    // const billTotal = 100;
+  createBill(billInfo, userAmounts) {
+    console.log(billInfo); // {description: ["john"], totalAmount: ["2000"]}
+    console.log(userAmounts); // array of objects
 
     // Calculates the total amount owed by each user.
     ledger = {};
