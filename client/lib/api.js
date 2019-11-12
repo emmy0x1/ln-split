@@ -57,6 +57,11 @@ class API {
     return this.request("POST", "/funds/withdrawal", payload);
   }
 
+  generateLnUrl(userId) {
+    const query = `?userId=${userId}`;
+    return this.request("GET", "/funds/generateLnUrl", null, query);
+  }
+
   // Internal function to make requests to server
   request(method, path, args, query = "") {
     let body = null;
