@@ -76,6 +76,7 @@ export class Server {
       },
     );
     this.app.use(errorHandler());
+    this.app.disable('etag');
   }
 
   /**
