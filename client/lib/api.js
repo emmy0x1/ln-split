@@ -9,6 +9,10 @@ class API {
     return this.request("GET", "/bills", {}, query);
   }
 
+  getBill(id) {
+    return this.request("GET", `/bills/${id}`, {});
+  }
+
   createBill(originalBill, billTotal) {
     // const originalBill = {
     //   "e@gmail.com": 90,

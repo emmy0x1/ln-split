@@ -1,5 +1,6 @@
 import api from "../lib/api";
 import React from "react";
+import { Link } from "@reach/router";
 
 
 class Bills extends React.Component {
@@ -29,14 +30,16 @@ class Bills extends React.Component {
 
   render() {
     const items = this.state.bills && this.state.bills.map((item, key) =>
-      <tr>
+      <tr key={item.id}>
         <td className="border px-4 py-2">{item.name}</td>
         <td className="border px-4 py-2">{item.description}</td>
         <td className="border px-4 py-2">{item.amount} {item.currency}</td>
         <td className="border px-4 py-2">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            View Bill
-          </button>
+          <Link to={`/view-bill/${item.id}`} className="pet">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              View Bill
+            </button>
+          </Link>
         </td>
       </tr>
     );

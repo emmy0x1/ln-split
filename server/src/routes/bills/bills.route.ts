@@ -24,6 +24,7 @@ export class BillsRoute extends BaseRoute {
   private constructor() {
     super();
     this.get = this.get.bind(this);
+    this.getId = this.getId.bind(this);
     // TODO: Validation check here
     this.init();
   }
@@ -38,6 +39,7 @@ export class BillsRoute extends BaseRoute {
   private init() {
     logger.info('[BillsRoute] Creating bills route.');
     this.router.get('/', [check('userId').exists()], this.get);
+    this.router.get('/:id', this.getId);
     this.router.get('/create', this.createBill);
   }
 
@@ -49,7 +51,6 @@ export class BillsRoute extends BaseRoute {
    * @param res {Response}
    * @param next {NextFunction}
    */
-
   private async get(req: Request, res: Response, next: NextFunction) {
     try {
       logger.info(
@@ -58,6 +59,28 @@ export class BillsRoute extends BaseRoute {
 
       const bills = await this.getUserBills(req.query.userId);
       res.json(bills);
+      next();
+    } catch (err) {
+      logger.error(`Caught error: ${err.message}`);
+      res.status(400).json({ error: err.message });
+      next();
+    }
+  }
+
+  /**
+   * Get bill by Id
+   * @class BillsRoute
+   * @method get
+   * @param req {Request}
+   * @param res {Response}
+   * @param next {NextFunction}
+   */
+  private async getId(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.info(`[BillsRoute] Retrieving bill by id: ${req.params.id}.`);
+
+      const bill = await this.getBill(req.params.id);
+      res.json(bill);
       next();
     } catch (err) {
       logger.error(`Caught error: ${err.message}`);
@@ -116,6 +139,21 @@ export class BillsRoute extends BaseRoute {
             throw error;
           }
           res(results.rows);
+        },
+      );
+    });
+  }
+
+  private async getBill(billId: number) {
+    return new Promise<number>(res => {
+      db.query(
+        'SELECT * FROM bills WHERE "id" = $1',
+        [billId],
+        (error: any, results: any) => {
+          if (error) {
+            throw error;
+          }
+          res(results.rows[0]);
         },
       );
     });
