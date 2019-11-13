@@ -4,8 +4,9 @@ class API {
   }
 
   // Bills Route
-  getBills() {
-    return this.request("GET", "/bills", {});
+  getBills(userId) {
+    const query = `?userId=${userId}`;
+    return this.request("GET", "/bills", {}, query);
   }
 
   createBill(originalBill, billTotal) {

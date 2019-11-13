@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Router, Link, navigate } from "@reach/router";
 import SplitBill from "./SplitBill";
 import CreateBill from "./CreateBill";
+import ViewBills from "./ViewBills";
 import Login from "./Login";
 import Landing from "./Landing";
 import Register from "./Register";
@@ -53,6 +54,7 @@ export default class App extends React.Component {
             <Landing path="/" />
             <SplitBill path="/split-bill" />
             <CreateBill path="/create-bill" />
+            <ViewBills path="/view-bills" />
             <Login path="/login" />
             <Register path="/register" />
             <Redeem path="/redeem" />

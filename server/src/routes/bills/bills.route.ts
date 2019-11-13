@@ -1,5 +1,8 @@
+import BigNumber from 'bignumber.js';
 import { NextFunction, Request, Response } from 'express';
+import { body, check, query } from 'express-validator';
 import { logger } from '../../services';
+import { Lightning } from '../../services/lnd';
 import { BaseRoute } from '../route';
 const db = require('../../../../db/dbConnection');
 
@@ -34,7 +37,7 @@ export class BillsRoute extends BaseRoute {
 
   private init() {
     logger.info('[BillsRoute] Creating bills route.');
-    this.router.get('/', this.get);
+    this.router.get('/', [check('userId').exists()], this.get);
     this.router.get('/create', this.createBill);
   }
 
@@ -49,18 +52,13 @@ export class BillsRoute extends BaseRoute {
 
   private async get(req: Request, res: Response, next: NextFunction) {
     try {
-      logger.info(`[BillsRoute] Retrieving all bills.`);
+      logger.info(
+        `[BillsRoute] Retrieving all bills from userId: ${req.query.userId}.`,
+      );
 
-      await db.query('SELECT * FROM bills', [], (err: any, result: any) => {
-        if (err) {
-          logger.info('not able to make query');
-          next();
-        }
-
-        console.log(`retrieved rows: ${result.rows.length}`);
-        res.json(result.rows);
-        next();
-      });
+      const bills = await this.getUserBills(req.query.userId);
+      res.json(bills);
+      next();
     } catch (err) {
       logger.error(`Caught error: ${err.message}`);
       res.status(400).json({ error: err.message });
@@ -106,5 +104,20 @@ export class BillsRoute extends BaseRoute {
       res.status(400).json({ error: err.message });
       next();
     }
+  }
+
+  private async getUserBills(userId: number) {
+    return new Promise<number>(res => {
+      db.query(
+        'SELECT * FROM bills WHERE "createdBy" = $1',
+        [userId],
+        (error: any, results: any) => {
+          if (error) {
+            throw error;
+          }
+          res(results.rows);
+        },
+      );
+    });
   }
 }
