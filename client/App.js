@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Router, Link, navigate } from "@reach/router";
+import { Router, Link, navigate, Redirect } from "@reach/router";
 import SplitBill from "./SplitBill";
 import CreateBill from "./CreateBill";
 import ViewBills from "./ViewBills";
@@ -36,11 +36,20 @@ export default class App extends React.Component {
       const user = JSON.parse(userJson);
       console.log(user);
       this.setState({ user: user });
-      navigate("/split-bill");
+    } else {
+      this.setState({ user: null })
     }
   }
 
   render() {
+    const ProtectedRoute = ({ component: Component, ...rest }) => (
+      this.state.user !== null ? <Component {...rest} /> : <Redirect from="" to="login" noThrow />
+    );
+
+    const PublicRoute = ({ component: Component, ...rest }) => (
+      <Component {...rest} />
+    );
+
     const logInProvider = {
       user: this.state.user,
       loginUser: this.login
@@ -52,14 +61,14 @@ export default class App extends React.Component {
 
         <userContext.Provider value={logInProvider}>
           <Router>
-            <Landing path="/" />
-            <SplitBill path="/split-bill" />
-            <CreateBill path="/create-bill" />
-            <ViewBills path="/view-bills" />
-            <ViewBill path="/view-bill/:id" />
-            <Login path="/login" />
-            <Register path="/register" />
-            <Redeem path="/redeem" />
+            <PublicRoute path="/" component={Landing}/>
+            <ProtectedRoute path="/split-bill" component={SplitBill} />
+            <ProtectedRoute path="/create-bill" component={CreateBill}/>
+            <ProtectedRoute path="/view-bills" component={ViewBills}/>
+            <PublicRoute path="/view-bill/:id" component={ViewBill}/>
+            <PublicRoute path="/login" component={Login}/>
+            <PublicRoute path="/register" component={Register}/>
+            <ProtectedRoute path="/redeem" component={Redeem}/>
           </Router>
         </userContext.Provider>
       </div>
