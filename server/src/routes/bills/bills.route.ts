@@ -80,19 +80,20 @@ export class BillsRoute extends BaseRoute {
   private async createBill(req: Request, res: Response, next: NextFunction) {
     try {
       logger.info(`[BillsRoute] Creating a new bill.`);
-      logger.info(req);
       const name = req.body.name || null;
       const description = req.body.description || null;
       const amount = req.body.amount;
       const currency = req.body.currency;
       const createdBy = req.body.userId;
 
+      console.log(req);
+
       await db.query('SELECT * FROM bills', [], (err: any, result: any) => {
         if (err) {
           logger.info('not able to make query');
           next();
         }
-
+        console.log(req.body);
         console.log(`retrieved rows: ${result.rows.length}`);
         res.json(result.rows);
         next();

@@ -55,6 +55,7 @@ class API {
     } else if (args !== undefined) {
       // TODO: handle if no args provided
     }
+    debugger;
 
     return fetch(this.url + path + query, { method, headers, body })
       .then(async res => {

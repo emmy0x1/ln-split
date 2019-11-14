@@ -28,7 +28,6 @@ const CreateBill = () => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    debugger;
     api.createBill(billState, userState);
   };
 

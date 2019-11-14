@@ -7,8 +7,8 @@
     "test": "NODE_ENV=test mocha './server/test/**/*.test.ts'",
     "dev": "concurrently -n server,client \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "webpack-dev-server --config ./client/webpack.config.js",
-    "dev:server": "ts-node --project server/tsconfig.json server/src/index.ts",
-    "lint": "tslint -c server/tslint.json 'server/{src,test}/**/*.ts' --fix",
+    "dev:server": "ts-node --project tsconfig.json server/src/index.ts",
+    "lint": "tslint -c tslint.json 'server/{src,test}/**/*.ts' --fix",
     "clean": "rm -rf ./build"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "bignumber.js": "^8.0.2",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
+    "cookie-parser": "^1.4.4",
     "cors": "^2.8.4",
     "css-loader": "^3.2.0",
     "debug": "^3.1.0",
