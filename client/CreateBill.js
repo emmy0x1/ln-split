@@ -2,19 +2,23 @@ import React, { useState } from "react";
 import api from "./lib/api";
 
 const CreateBill = () => {
-  // TODO: add total bill amount and handle in bill state
-  const [billState, setBillState] = useState({
-    description: "",
-    totalAmount: ""
-  });
+  const [descriptionState, setDescriptionState] = useState("");
+  const [totalAmountState, setTotalAmountState] = useState(0);
+
   const blankUser = { name: "", amount: "" };
   const [userState, setUserState] = useState([{ ...blankUser }]);
 
-  const handleBillChange = e =>
-    setBillState({
-      ...billState,
-      [e.target.name]: [e.target.value]
-    });
+  const handleBillChange = e => {
+    if (e.target.name === "description") {
+      setDescriptionState({
+        description: e.target.value
+      });
+    } else {
+      setTotalAmountState({
+        totalAmount: e.target.value
+      });
+    }
+  };
 
   const handleUserChange = e => {
     const updatedUsers = [...userState];
@@ -28,7 +32,9 @@ const CreateBill = () => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    api.createBill(billState, userState);
+    api.createBill(descriptionState, totalAmountState, {
+      userAmounts: userState
+    });
   };
 
   return (

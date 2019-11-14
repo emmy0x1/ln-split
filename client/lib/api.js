@@ -13,14 +13,8 @@ class API {
     return this.request("GET", `/bills/${id}`, {});
   }
 
-  createBill(originalBill, userAmounts) {
-    // originalBill = { description: ["lunch"], totalAmount: ["200"] };
-    // userAmounts = [
-    //   { name: "john", amount: "100" },
-    //   { name: "an", amount: "100" }
-    // ];
-
-    const payload = { originalBill, userAmounts };
+  createBill(description, totalAmount, userAmounts) {
+    const payload = Object.assign({}, description, totalAmount, userAmounts);
 
     return this.request("POST", "/bills/create", payload);
   }

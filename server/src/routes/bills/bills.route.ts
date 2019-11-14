@@ -6,6 +6,7 @@ import { Lightning } from '../../services/lnd';
 import { BaseRoute } from '../route';
 const db = require('../../../../db/dbConnection');
 
+// prettier-ignore
 /**
  * @api {get} /bills Bills
  * @apiName Bills
@@ -14,7 +15,7 @@ const db = require('../../../../db/dbConnection');
  * @apiSuccess 200
  */
 export class BillsRoute extends BaseRoute {
-  public static path = '/bills';
+  public static path = "/bills";
   private static instance: BillsRoute;
 
   /**
@@ -37,10 +38,10 @@ export class BillsRoute extends BaseRoute {
   }
 
   private init() {
-    logger.info('[BillsRoute] Creating bills route.');
-    this.router.get('/', [check('userId').exists()], this.get);
-    this.router.get('/:id', this.getId);
-    this.router.get('/create', this.createBill);
+    logger.info("[BillsRoute] Creating bills route.");
+    this.router.get("/", [check("userId").exists()], this.get);
+    this.router.get("/:id", this.getId);
+    this.router.post("/create", this.createBill);
   }
 
   /**
@@ -54,7 +55,7 @@ export class BillsRoute extends BaseRoute {
   private async get(req: Request, res: Response, next: NextFunction) {
     try {
       logger.info(
-        `[BillsRoute] Retrieving all bills from userId: ${req.query.userId}.`,
+        `[BillsRoute] Retrieving all bills from userId: ${req.query.userId}.`
       );
 
       const bills = await this.getUserBills(req.query.userId);
@@ -101,24 +102,35 @@ export class BillsRoute extends BaseRoute {
   private async createBill(req: Request, res: Response, next: NextFunction) {
     try {
       logger.info(`[BillsRoute] Creating a new bill.`);
-      const name = req.body.name || null;
       const description = req.body.description || null;
-      const amount = req.body.amount;
-      const currency = req.body.currency;
-      const createdBy = req.body.userId;
+      const totalAmount = Number(req.body.totalAmount);
+      // Limiting to USD for now.
+      const currency = 'USD';
+      // TODO: Pass in user.
+      const createdBy = req.body.userId || 1;
+      // TODO:
+      // Payload for userAmounts is stored in Postgres using '\'
+      // to escape characters. 
+      // Not sure if we want this.
+      const userAmounts = req.body.userAmounts;
 
-      console.log(req);
+      const query = {
+        text: 'INSERT INTO bills(name, description, amount, currency, "createdBy", user_amounts) VALUES($1, $2, $3, $4, $5, $6)',
+        values:  ['test', description, totalAmount, currency, createdBy, userAmounts],
+      }
 
-      await db.query('SELECT * FROM bills', [], (err: any, result: any) => {
-        if (err) {
-          logger.info('not able to make query');
+      await db.query(
+        query.text, query.values,       
+        (err: any, result: any) => {
+          if (err) {
+            logger.info("not able to make query");
+            next();
+          }
+          console.log(`retrieved rows: ${result.rows.length}`);
+          res.json(result.rows);
           next();
         }
-        console.log(req.body);
-        console.log(`retrieved rows: ${result.rows.length}`);
-        res.json(result.rows);
-        next();
-      });
+      );
     } catch (err) {
       logger.error(`Caught error: ${err.message}`);
       res.status(400).json({ error: err.message });
@@ -136,7 +148,7 @@ export class BillsRoute extends BaseRoute {
             throw error;
           }
           res(results.rows);
-        },
+        }
       );
     });
   }
@@ -151,7 +163,7 @@ export class BillsRoute extends BaseRoute {
             throw error;
           }
           res(results.rows[0]);
-        },
+        }
       );
     });
   }

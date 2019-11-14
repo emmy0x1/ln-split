@@ -1892,7 +1892,7 @@ body-parser@^1.18.3:
     raw-body "2.3.3"
     type-is "~1.6.16"
 
-bolt11@1.2.6, "bolt11@git://github.com/LN-Zap/bolt11.git#simnet":
+bolt11@1.2.6:
   version "1.2.6"
   resolved "git://github.com/LN-Zap/bolt11.git#0492874ea9ced4ab49bf0f59a62368687f147247"
   dependencies:
@@ -5990,6 +5990,11 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@latest:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
 node-forge@0.9.0:
   version "0.9.0"

@@ -27,7 +27,8 @@ create table if not exists bills
 	description varchar(256),
 	amount double precision,
 	currency varchar(10),
-	"createdBy" integer
+	"createdBy" integer,
+	user_amounts varchar(256)
 );
 
 alter table bills owner to lapp;
