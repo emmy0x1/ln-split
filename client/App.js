@@ -43,7 +43,7 @@ export default class App extends React.Component {
 
   render() {
     const ProtectedRoute = ({ component: Component, ...rest }) => (
-      this.state.user !== null ? <Component {...rest} /> : <Redirect from="" to="login" noThrow />
+      this.state.user !== null ? <Component {...rest} /> : <Redirect from="" to="/" noThrow />
     );
 
     const PublicRoute = ({ component: Component, ...rest }) => (
