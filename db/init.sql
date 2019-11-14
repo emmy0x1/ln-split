@@ -28,7 +28,7 @@ create table if not exists bills
 	amount double precision,
 	currency varchar(10),
 	"createdBy" integer,
-	user_amounts varchar(256)
+	user_amounts jsonb
 );
 
 alter table bills owner to lapp;

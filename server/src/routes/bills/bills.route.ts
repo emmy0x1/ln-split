@@ -108,11 +108,7 @@ export class BillsRoute extends BaseRoute {
       const currency = 'USD';
       // TODO: Pass in user.
       const createdBy = req.body.userId || 1;
-      // TODO:
-      // Payload for userAmounts is stored in Postgres using '\'
-      // to escape characters. 
-      // Not sure if we want this.
-      const userAmounts = req.body.userAmounts;
+      const userAmounts = JSON.stringify(req.body.userAmounts);
 
       const query = {
         text: 'INSERT INTO bills(name, description, amount, currency, "createdBy", user_amounts) VALUES($1, $2, $3, $4, $5, $6)',
@@ -120,7 +116,7 @@ export class BillsRoute extends BaseRoute {
       }
 
       await db.query(
-        query.text, query.values,       
+        query.text, query.values,
         (err: any, result: any) => {
           if (err) {
             logger.info("not able to make query");
