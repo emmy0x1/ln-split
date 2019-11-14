@@ -1,10 +1,17 @@
 import React from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 
 class Landing extends React.Component {
   constructor() {
     super();
     this.state = {  };
+  }
+
+  componentDidMount() {
+    const userJson = localStorage.getItem("user");
+    if (userJson) {
+      navigate("/split-bill");
+    }
   }
 
   render() {

@@ -3,6 +3,7 @@ import { Server } from './app';
 import { isTestEnv } from './env';
 import { logger } from './services';
 import { Lightning, LnRpcSubscriptionManager } from './services/lnd';
+import { LnUrlManager } from './services/lnurl';
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ if (!isTestEnv()) {
       }.`,
     );
     await LnRpcSubscriptionManager.subscribeInvoices();
+
+    // set up lnurl
+    await LnUrlManager.init();
 
     const port = process.env.SERVER_PORT;
     app.listen(port);

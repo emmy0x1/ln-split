@@ -1,5 +1,7 @@
 import api from "../lib/api";
 import React from "react";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+const QRCode = require('qrcode.react');
 
 
 class RedeemComponent extends React.Component {
@@ -10,7 +12,8 @@ class RedeemComponent extends React.Component {
       redeem: false,
       invoice: null,
       paid: false,
-      paymentError: null
+      paymentError: null,
+      lnUrl: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.redeemClicked = this.redeemClicked.bind(this);
@@ -61,6 +64,15 @@ class RedeemComponent extends React.Component {
           this.setState({ available: r.available });
         }
       });
+
+    api.generateLnUrl(this.props.user.id)
+      .then(r => {
+        if (r.error) {
+          console.error(r.error);
+        } else {
+          this.setState({ lnUrl: r.lnUrl });
+        }
+      });
   }
 
   render() {
@@ -78,10 +90,20 @@ class RedeemComponent extends React.Component {
           : null
         }
 
+        {/* LnUrl QR Code */}
+        { this.state.redeem && !this.state.paid  && this.state.lnUrl
+          ? <div>
+              <CopyToClipboard text={this.state.lnUrl}>
+                <QRCode value={this.state.lnUrl} />
+              </CopyToClipboard>
+            </div>
+          : null
+        }
+
         {/* Invoice form */}
         { this.state.redeem && !this.state.paid
           ? <div>
-            Paste an invoice for an amount up to {this.state.available}.
+            Scan or paste an invoice for an amount up to {this.state.available}.
             <br />
             <br />
 

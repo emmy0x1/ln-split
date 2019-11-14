@@ -45,6 +45,18 @@ create table if not exists funds
 
 alter table funds owner to lapp;
 
+create table if not exists lnurl
+(
+	id serial not null,
+	secret varchar(256) not null,
+	"userId" integer not null
+);
+
+alter table lnurl owner to lapp;
+
+create unique index if not exists lnurl_secret_uindex
+	on lnurl (secret);
+
 -- sample data
 
 insert into users (name, "emailAddress", "passwordHash", salt)

@@ -3,18 +3,22 @@ class API {
     this.url = process.env.API_PATH;
   }
 
-  getBills() {
-    return this.request("GET", "/bills", {});
+  // Bills Route
+  getBills(userId) {
+    const query = `?userId=${userId}`;
+    return this.request("GET", "/bills", {}, query);
   }
 
-  // TODO:
+  getBill(id) {
+    return this.request("GET", `/bills/${id}`, {});
+  }
 
   createBill(originalBill, userAmounts) {
-    originalBill = { description: ["lunch"], totalAmount: ["200"] };
-    userAmounts = [
-      { name: "john", amount: "100" },
-      { name: "an", amount: "100" }
-    ];
+    // originalBill = { description: ["lunch"], totalAmount: ["200"] };
+    // userAmounts = [
+    //   { name: "john", amount: "100" },
+    //   { name: "an", amount: "100" }
+    // ];
 
     const payload = { originalBill, userAmounts };
 
@@ -41,6 +45,11 @@ class API {
   withdrawalFunds(userId, invoice) {
     const payload = { userId, invoice };
     return this.request("POST", "/funds/withdrawal", payload);
+  }
+
+  generateLnUrl(userId) {
+    const query = `?userId=${userId}`;
+    return this.request("GET", "/funds/generateLnUrl", null, query);
   }
 
   // Internal function to make requests to server

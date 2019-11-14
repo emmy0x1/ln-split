@@ -1,5 +1,8 @@
+import BigNumber from 'bignumber.js';
 import { NextFunction, Request, Response } from 'express';
+import { body, check, query } from 'express-validator';
 import { logger } from '../../services';
+import { Lightning } from '../../services/lnd';
 import { BaseRoute } from '../route';
 const db = require('../../../../db/dbConnection');
 
@@ -22,6 +25,7 @@ export class BillsRoute extends BaseRoute {
     super();
     this.get = this.get.bind(this);
     this.createBill = this.createBill.bind(this);
+    this.getId = this.getId.bind(this);
     this.init();
   }
 
@@ -34,8 +38,9 @@ export class BillsRoute extends BaseRoute {
 
   private init() {
     logger.info('[BillsRoute] Creating bills route.');
-    this.router.get('/', this.get);
-    this.router.post('/create', this.createBill);
+    this.router.get('/', [check('userId').exists()], this.get);
+    this.router.get('/:id', this.getId);
+    this.router.get('/create', this.createBill);
   }
 
   /**
@@ -46,21 +51,37 @@ export class BillsRoute extends BaseRoute {
    * @param res {Response}
    * @param next {NextFunction}
    */
-
   private async get(req: Request, res: Response, next: NextFunction) {
     try {
-      logger.info(`[BillsRoute] Retrieving all bills.`);
+      logger.info(
+        `[BillsRoute] Retrieving all bills from userId: ${req.query.userId}.`,
+      );
 
-      await db.query('SELECT * FROM bills', [], (err: any, result: any) => {
-        if (err) {
-          logger.info('not able to make query');
-          next();
-        }
+      const bills = await this.getUserBills(req.query.userId);
+      res.json(bills);
+      next();
+    } catch (err) {
+      logger.error(`Caught error: ${err.message}`);
+      res.status(400).json({ error: err.message });
+      next();
+    }
+  }
 
-        console.log(`retrieved rows: ${result.rows.length}`);
-        res.json(result.rows);
-        next();
-      });
+  /**
+   * Get bill by Id
+   * @class BillsRoute
+   * @method get
+   * @param req {Request}
+   * @param res {Response}
+   * @param next {NextFunction}
+   */
+  private async getId(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.info(`[BillsRoute] Retrieving bill by id: ${req.params.id}.`);
+
+      const bill = await this.getBill(req.params.id);
+      res.json(bill);
+      next();
     } catch (err) {
       logger.error(`Caught error: ${err.message}`);
       res.status(400).json({ error: err.message });
@@ -103,5 +124,35 @@ export class BillsRoute extends BaseRoute {
       res.status(400).json({ error: err.message });
       next();
     }
+  }
+
+  private async getUserBills(userId: number) {
+    return new Promise<number>(res => {
+      db.query(
+        'SELECT * FROM bills WHERE "createdBy" = $1',
+        [userId],
+        (error: any, results: any) => {
+          if (error) {
+            throw error;
+          }
+          res(results.rows);
+        },
+      );
+    });
+  }
+
+  private async getBill(billId: number) {
+    return new Promise<number>(res => {
+      db.query(
+        'SELECT * FROM bills WHERE "id" = $1',
+        [billId],
+        (error: any, results: any) => {
+          if (error) {
+            throw error;
+          }
+          res(results.rows[0]);
+        },
+      );
+    });
   }
 }
