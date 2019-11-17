@@ -106,7 +106,6 @@ export class BillsRoute extends BaseRoute {
       const totalAmount = Number(req.body.totalAmount);
       // Limiting to USD for now.
       const currency = 'USD';
-      // TODO: Pass in user.
       const createdBy = req.body.userId || 1;
       const userAmounts = JSON.stringify(req.body.userAmounts);
 

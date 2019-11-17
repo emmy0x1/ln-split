@@ -58,6 +58,16 @@ alter table lnurl owner to lapp;
 create unique index if not exists lnurl_secret_uindex
 	on lnurl (secret);
 
+create table if not exists rate
+(
+	rate double precision,
+	date timestamp with time zone default now()
+);
+
+alter table rate owner to lapp;
+
+
+
 -- sample data
 
 insert into users (name, "emailAddress", "passwordHash", salt)

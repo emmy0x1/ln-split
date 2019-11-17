@@ -46,6 +46,11 @@ class API {
     return this.request("GET", "/funds/generateLnUrl", null, query);
   }
 
+  // Rate Route
+  bitcoinRate() {
+    return this.request("GET", "/rate", null);
+  }
+
   // Internal function to make requests to server
   request(method, path, args, query = "") {
     let body = null;

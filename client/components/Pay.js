@@ -14,12 +14,14 @@ class Pay extends React.Component {
         currency: null,
         createdBy: null,
         user_amounts: []
-      }
+      },
+      bitcoinRate: 0,
     };
   }
 
   componentDidMount() {
     this.getBill();
+    this.getBitcoinRate();
   }
 
   getBill() {
@@ -35,14 +37,27 @@ class Pay extends React.Component {
     }
   }
 
+  getBitcoinRate() {
+    api.bitcoinRate()
+      .then(r => {
+        if (r.error) {
+          console.error(r.error);
+        } else {
+          this.setState({bitcoinRate: r.rate});
+        }
+      })
+  }
+
   render() {
     // basic logic that splits total into amount of users.
     // TODO take into account how much this user might have already paid
-    const totalOwed = this.state.bill.amount / this.state.bill.user_amounts.length;
+    const totalOwed = (this.state.bill.amount / this.state.bill.user_amounts.length).toFixed(2);
+    const satoshiOwed = ((totalOwed / this.state.bitcoinRate) * 100000000).toFixed(0);
 
     return (
       <div className="p-64">
-        {this.props.name}, you owe {totalOwed}! Pay it now:
+        {this.props.name}, you owe ${totalOwed} ({this.state.bitcoinRate && satoshiOwed} sats)!
+        Pay it now:
       </div>
     );
   }

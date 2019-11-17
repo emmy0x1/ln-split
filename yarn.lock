@@ -2065,6 +2065,11 @@ bs58check@<3.0.0, bs58check@^2.0.0:
     create-hash "^1.1.0"
     safe-buffer "^5.1.2"
 
+btc-value@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/btc-value/-/btc-value-2.1.1.tgz#11d815e3e5aafa7087cebd33805e3c804f53d0a2"
+  integrity sha512-5h5b4ZZs1IdlrBCd8+Srg+AxSe9TARoKDEdReL2qWG0VdJu43KeTClByjGBXjn+GbDzQZXEOlc8QcWJ95xoSPA==
+
 buffer-from@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
