@@ -13,9 +13,9 @@ class API {
     return this.request("GET", `/bills/${id}`, {});
   }
 
-  createBill(description, totalAmount, userAmounts) {
-    const payload = Object.assign({}, description, totalAmount, userAmounts);
-
+  createBill(userId, description, totalAmount, userAmounts) {
+    const userIdObj = {userId: userId}
+    const payload = Object.assign({}, userIdObj, description, totalAmount, userAmounts);
     return this.request("POST", "/bills/create", payload);
   }
 
@@ -58,7 +58,7 @@ class API {
     } else if (args !== undefined) {
       // TODO: handle if no args provided
     }
-    debugger;
+    // debugger;
 
     return fetch(this.url + path + query, { method, headers, body })
       .then(async res => {

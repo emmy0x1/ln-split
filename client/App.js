@@ -4,6 +4,7 @@ import SplitBill from "./SplitBill";
 import CreateBill from "./CreateBill";
 import ViewBills from "./ViewBills";
 import ViewBill from "./ViewBill";
+import PayBill from "./PayBill";
 import Login from "./Login";
 import Landing from "./Landing";
 import Register from "./Register";
@@ -66,6 +67,7 @@ export default class App extends React.Component {
             <ProtectedRoute path="/create-bill" component={CreateBill}/>
             <ProtectedRoute path="/view-bills" component={ViewBills}/>
             <PublicRoute path="/view-bill/:id" component={ViewBill}/>
+            <PublicRoute path="/pay-bill/:id/:name" component={PayBill}/>
             <PublicRoute path="/login" component={Login}/>
             <PublicRoute path="/register" component={Register}/>
             <ProtectedRoute path="/redeem" component={Redeem}/>
