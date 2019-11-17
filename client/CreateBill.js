@@ -2,17 +2,23 @@ import React, { useState } from "react";
 import api from "./lib/api";
 
 const CreateBill = () => {
-  const [billState, setBillState] = useState({
-    description: ""
-  });
+  const [descriptionState, setDescriptionState] = useState("");
+  const [totalAmountState, setTotalAmountState] = useState(0);
+
   const blankUser = { name: "", amount: "" };
   const [userState, setUserState] = useState([{ ...blankUser }]);
 
-  const handleBillChange = e =>
-    setBillState({
-      ...billState,
-      [e.target.name]: [e.target.value]
-    });
+  const handleBillChange = e => {
+    if (e.target.name === "description") {
+      setDescriptionState({
+        description: e.target.value
+      });
+    } else {
+      setTotalAmountState({
+        totalAmount: e.target.value
+      });
+    }
+  };
 
   const handleUserChange = e => {
     const updatedUsers = [...userState];
@@ -26,8 +32,9 @@ const CreateBill = () => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    console.log(billState);
-    console.log(userState);
+    api.createBill(descriptionState, totalAmountState, {
+      userAmounts: userState
+    });
   };
 
   return (
@@ -38,6 +45,15 @@ const CreateBill = () => {
         type="text"
         name="description"
         id="description"
+        onChange={handleBillChange}
+      />
+      <label htmlFor="totalAmount">Total Amount</label>
+      <input
+        className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block  appearance-none leading-normal"
+        type="number"
+        name="totalAmount"
+        id="totalAmount"
+        onChange={handleBillChange}
       />
       <input
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

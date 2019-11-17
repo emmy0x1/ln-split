@@ -1,10 +1,10 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 
 let pool = null;
 
 module.exports = {
   query: function(text, values, cb) {
-    if (!pool){
+    if (!pool) {
       pool = new Pool({
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
@@ -13,7 +13,7 @@ module.exports = {
         ssl: false,
         max: 20,
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 2000,
+        connectionTimeoutMillis: 2000
       });
     }
 
@@ -22,7 +22,7 @@ module.exports = {
       client.query(text, values, function(err, result) {
         done();
         cb(err, result);
-      })
+      });
     });
   }
 };

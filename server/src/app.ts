@@ -1,11 +1,13 @@
 import * as bodyParser from 'body-parser';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import errorHandler from 'errorhandler';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
+import { cookie } from 'express-validator';
 import { ApiRoutes } from './routes';
 import { logger } from './services';
 
@@ -51,6 +53,8 @@ export class Server {
       } as morgan.Options),
     );
 
+    // configure cookie parser
+    // this.app.use(cookieParser());
     // configure body parser
     this.app.use(bodyParser.json({ limit: '50mb' }));
     this.app.use(

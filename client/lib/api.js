@@ -13,30 +13,9 @@ class API {
     return this.request("GET", `/bills/${id}`, {});
   }
 
-  createBill(originalBill, billTotal) {
-    // const originalBill = {
-    //   "e@gmail.com": 90,
-    //   "test@gmail.com": 10,
-    //   "name@gmail.com": 0
-    // };
+  createBill(description, totalAmount, userAmounts) {
+    const payload = Object.assign({}, description, totalAmount, userAmounts);
 
-    // const split = {
-    //   "e@gmail.com": 30,
-    //   "test@gmail.com": 40,
-    //   "name@gmail.com": 30
-    // };
-
-    // const billTotal = 100;
-
-    // Calculates the total amount owed by each user.
-    ledger = {};
-    for (const key in originalBill) {
-      if (originalBill.hasOwnProperty(key)) {
-        ledger[key] = originalBill[key] - split[key];
-      }
-    }
-
-    payload = { originalBill, ledger, billTotal };
     return this.request("POST", "/bills/create", payload);
   }
 
@@ -79,6 +58,7 @@ class API {
     } else if (args !== undefined) {
       // TODO: handle if no args provided
     }
+    debugger;
 
     return fetch(this.url + path + query, { method, headers, body })
       .then(async res => {
