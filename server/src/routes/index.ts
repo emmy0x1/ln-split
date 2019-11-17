@@ -4,6 +4,7 @@ import { BillsRoute } from './bills';
 import { FundsRoute } from './funds';
 import { InvoiceRoute } from './invoice';
 import { PingRoute } from './ping';
+import { RateRoute } from './rate';
 import { BaseRoute } from './route';
 import { UsersRoute } from './users';
 
@@ -51,6 +52,7 @@ export class ApiRoutes extends BaseRoute {
     this.router.use(BillsRoute.path, BillsRoute.router);
     this.router.use(UsersRoute.path, UsersRoute.router);
     this.router.use(FundsRoute.path, FundsRoute.router);
+    this.router.use(RateRoute.path, RateRoute.router);
   }
 
   /**
