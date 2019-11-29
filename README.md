@@ -1,4 +1,5 @@
-# LApp
+# LN Split
+This was created as an entry to RADAR ION's STRIKE Hackathon.
 
 ## Quickstart
 
